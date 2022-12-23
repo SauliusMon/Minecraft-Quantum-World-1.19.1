@@ -1,0 +1,26 @@
+{
+
+  "item.quantum_world.cosmic_ingot" : "Cosmic Ingot",
+  "item.quantum_world.energium_ingot": "Energium Ingot",
+
+  "block.quantum_world.cosmic_ore": "Cosmic Ore",
+  "block.quantum_world.cosmic_block": "Cosmic Block",
+
+  "item.quantum_world.cosmic_axe": "Cosmic Axe",
+  "item.quantum_world.cosmic_hoe": "Cosmic Hoe",
+  "item.quantum_world.cosmic_pickaxe": "Cosmic Pickaxe",
+  "item.quantum_world.cosmic_shovel": "Cosmic Shovel",
+  "item.quantum_world.cosmic_sword": "Cosmic Sword",
+
+  "item.quantum_world.energium_axe": "Energium Axe",
+  "item.quantum_world.energium_hoe": "Energium Hoe",
+  "item.quantum_world.energium_pickaxe": "Energium Pickaxe",
+  "item.quantum_world.energium_shovel": "Energium Shovel",
+  "item.quantum_world.energium_sword": "Energium Sword",
+
+  "block.quantum_world.basic_electricity_holder": "Basic electricity holder",
+  "block.quantum_world.basic_electricity_generator": "Basic electricity generator",
+
+  "comment": "Creative Tabs",
+  "itemGroup.tab_quantum_world": "Quantum world"
+}

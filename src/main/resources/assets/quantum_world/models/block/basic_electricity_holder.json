@@ -1,0 +1,11 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "north": "quantum_world:block/basic_electricity_holder/basic_electricity_holder",
+    "south": "quantum_world:block/basic_electricity_holder/basic_electricity_holder",
+    "west": "quantum_world:block/basic_electricity_holder/basic_electricity_holder",
+    "east": "quantum_world:block/basic_electricity_holder/basic_electricity_holder",
+    "up": "quantum_world:block/basic_electricity_holder/basic_electricity_holder_top",
+    "down": "quantum_world:block/basic_electricity_holder/basic_electricity_holder_bottom"
+  }
+}

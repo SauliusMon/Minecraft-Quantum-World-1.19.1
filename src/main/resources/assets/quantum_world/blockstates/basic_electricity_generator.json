@@ -1,0 +1,10 @@
+{
+  "variants" :{
+    "facing=north": { "model":  "quantum_world:block/basic_electricity_generator"},
+    "facing=south": { "model":  "quantum_world:block/basic_electricity_generator", "y": 180 },
+    "facing=west": { "model":  "quantum_world:block/basic_electricity_generator", "y": 270 },
+    "facing=east": { "model":  "quantum_world:block/basic_electricity_generator" , "y": 90 },
+    "facing=up": { "model":  "quantum_world:block/basic_electricity_generator", "x": -90 },
+    "facing=down": { "model":  "quantum_world:block/basic_electricity_generator", "x": 90 }
+  }
+}

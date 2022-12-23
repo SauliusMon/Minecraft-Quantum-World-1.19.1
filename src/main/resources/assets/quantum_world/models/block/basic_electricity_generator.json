@@ -1,0 +1,11 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "north": "quantum_world:block/basic_electricity_generator/basic_electricity_generator_side_front",
+    "south": "quantum_world:block/basic_electricity_generator/basic_electricity_generator_side_back",
+    "west": "quantum_world:block/basic_electricity_generator/basic_electricity_generator_side",
+    "east": "quantum_world:block/basic_electricity_generator/basic_electricity_generator_side",
+    "up": "quantum_world:block/basic_electricity_generator/basic_electricity_generator_top_bot",
+    "down": "quantum_world:block/basic_electricity_generator/basic_electricity_generator_top_bot"
+  }
+}
