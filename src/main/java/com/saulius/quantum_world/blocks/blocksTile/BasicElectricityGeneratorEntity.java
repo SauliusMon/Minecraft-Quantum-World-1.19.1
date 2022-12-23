@@ -101,7 +101,6 @@ public class BasicElectricityGeneratorEntity extends BlockEntity implements Menu
                 if (entity.getEnergyStorage().canReceive()) {
                     entity.blockEnergy.receiveEnergy(5, false);
                     entity.reduceScale();
-//                      entity.itemStackHandler.setStackInSlot(0, new ItemStack(ItemsRegistry.COSMIC_INGOT.get()));
                 }
             } else {
                 if (entity.itemStackHandler.getStackInSlot(0).getItem() == ItemsRegistry.ENERGIUM_INGOT.get()) {
