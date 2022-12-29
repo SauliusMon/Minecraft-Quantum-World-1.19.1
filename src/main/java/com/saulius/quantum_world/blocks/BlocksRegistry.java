@@ -3,8 +3,8 @@ package com.saulius.quantum_world.blocks;
 import com.saulius.quantum_world.QuantumWorld;
 import com.saulius.quantum_world.blocks.advancedBlocks.BasicElectricityGeneratorBlock;
 import com.saulius.quantum_world.blocks.advancedBlocks.BasicElectricityHolderBlock;
+import com.saulius.quantum_world.blocks.advancedBlocks.CopperCableBlock;
 import com.saulius.quantum_world.blocks.blocksGeneration.BlockPropertiesGeneration;
-import com.saulius.quantum_world.blocks.blocksTile.BasicElectricityGeneratorEntity;
 import com.saulius.quantum_world.items.itemsRegistry.ItemsRegistry;
 import com.saulius.quantum_world.items.itemsRegistry.ModCreativeModeTabs;
 import net.minecraft.world.item.BlockItem;
@@ -37,6 +37,9 @@ public class BlocksRegistry {
 
     public static final RegistryObject<Block> BASIC_ELECTRICITY_GENERATOR = registerBlock("basic_electricity_generator",
             () -> new BasicElectricityGeneratorBlock(BlockBehaviour.Properties.of(Material.METAL)), ModCreativeModeTabs.TAB_QUANTUM_WORLD);
+
+    public static final RegistryObject<Block> COPPER_CABLE = registerBlock("copper_cable",
+            () -> new CopperCableBlock(BlockBehaviour.Properties.of(Material.WOOL)), ModCreativeModeTabs.TAB_QUANTUM_WORLD);
 
 
 

@@ -40,6 +40,7 @@ public class BasicElectricityGeneratorScreen extends AbstractContainerScreen<Bas
 
         ModPackets.sendToServer(new ClientRequestForEnergyAndScaleSync(menu.blockEntity.getBlockPos()));      //Doing 20 times per second
         redrawBattery(poseStack, imageLocX, imageLocY);
+        redrawBurnScale(poseStack, imageLocX, imageLocY);
     }
 //     Format : PoseStack,
 //     Image cords relative to screen X-Y
@@ -65,10 +66,21 @@ public class BasicElectricityGeneratorScreen extends AbstractContainerScreen<Bas
         this.blit(poseStack, imageLocX + 41, imageLocY + 68 - energyAmountScale, 176, 73 - energyAmountScale, 21, energyAmountScale);
     }
 
+    private final int MAX_BURN_SCALE = menu.blockEntity.getProgressScale().getMaxScale();
+    private final int BURN_SCALE_PER_PIXEL = MAX_BURN_SCALE / 12;
+
+    private void redrawBurnScale(PoseStack poseStack, int imageLocX, int imageLocY) {
+        int burnScale = menu.blockEntity.getProgressScale().getScale();
+        if (burnScale != 0) {
+            int scale = Math.max(1, Math.min(12, burnScale / BURN_SCALE_PER_PIXEL));
+            this.blit(poseStack, imageLocX + 76, imageLocY + 42 - scale, 176, 12 - scale, 13, scale + 1);
+        }
+    }
+
     @Override
-    public void render(PoseStack poseStack, int posX, int poxY, float delta) {
+    public void render(PoseStack poseStack, int posX, int posY, float delta) {
         renderBackground(poseStack);                                       // Background color when screen is open
-        super.render(poseStack, posX, poxY, delta);                        // Displayed menu parameters
-        renderTooltip(poseStack, posX, poxY);                              // ToolTip when mouse hovers on item in slot
+        super.render(poseStack, posX, posY, delta);                        // Displayed menu parameters
+        renderTooltip(poseStack, posX, posY);                              // ToolTip when mouse hovers on item in slot
     }
 }

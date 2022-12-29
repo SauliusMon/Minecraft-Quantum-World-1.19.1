@@ -1,0 +1,19 @@
+{
+  "textures": {
+    "copper_cable": "quantum_world:block/copper_cable/copper_cable"
+  },
+  "elements": [
+    {
+      "from" : [ 6, 6, 6 ],
+      "to" : [ 10, 10, 10 ],
+      "faces" : {
+        "up":    { "uv": [ 6, 6, 10, 10 ], "texture": "#copper_cable" },
+        "down":  { "uv": [ 6, 6, 10, 10 ], "texture": "#copper_cable" },
+        "north": { "uv": [ 6, 6, 10, 10 ], "texture": "#copper_cable" },
+        "south": { "uv": [ 6, 6, 10, 10 ], "texture": "#copper_cable" },
+        "west":  { "uv": [ 6, 6, 10, 10 ], "texture": "#copper_cable" },
+        "east":  { "uv": [ 6, 6, 10, 10 ], "texture": "#copper_cable" }
+      }
+    }
+  ]
+}

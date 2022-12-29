@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class BasicElectricityGeneratorBlock extends BaseEntityBlock {
 
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
     public BasicElectricityGeneratorBlock(Properties properties) { super(properties); }
 

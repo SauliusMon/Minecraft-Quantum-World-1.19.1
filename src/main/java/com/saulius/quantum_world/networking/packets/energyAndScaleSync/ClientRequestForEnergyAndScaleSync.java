@@ -27,7 +27,7 @@ public class ClientRequestForEnergyAndScaleSync {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
             AbstractModEnergyAndTick blockEntity = (AbstractModEnergyAndTick) supplier.get().getSender().getLevel().getBlockEntity(blockPos);
-            ModPackets.sendToPlayer(new ClientEnergyAndScaleSync(blockPos, blockEntity.getEnergyStorage().getEnergyStored(), blockEntity.getScale()), supplier.get().getSender());
+            ModPackets.sendToPlayer(new ClientEnergyAndScaleSync(blockPos, blockEntity.getEnergyStorage().getEnergyStored(), blockEntity.getProgressScale().getScale()), supplier.get().getSender());
         });
         return true;
     }

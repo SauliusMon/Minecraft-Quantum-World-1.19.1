@@ -99,9 +99,9 @@ public class BasicElectricityHolderScreen extends AbstractContainerScreen<BasicE
     }
 
     @Override
-    public void render(PoseStack poseStack, int posX, int poxY, float delta) {
+    public void render(PoseStack poseStack, int posX, int posY, float delta) {
         renderBackground(poseStack);                                       // Background color when screen is open
-        super.render(poseStack, posX, poxY, delta);                        // Displayed menu parameters
-        renderTooltip(poseStack, posX, poxY);                              // ToolTip when mouse hovers on item in slot
+        super.render(poseStack, posX, posY, delta);                        // Displayed menu parameters
+        renderTooltip(poseStack, posX, posY);
     }
 }

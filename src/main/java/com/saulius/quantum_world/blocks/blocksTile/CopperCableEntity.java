@@ -1,20 +1,25 @@
 package com.saulius.quantum_world.blocks.blocksTile;
 
-import com.saulius.quantum_world.blocks.blocksGui.BasicElectricityHolderGUI.BasicElectricityHolderMenu;
-import com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking.AbstractModEnergy;
+import com.saulius.quantum_world.blocks.advancedBlocks.CopperCableBlock;
+import com.saulius.quantum_world.blocks.blocksGui.BasicElectricityGeneratorGUI.BasicElectricityGeneratorMenu;
 import com.saulius.quantum_world.items.itemsRegistry.ItemsRegistry;
 import com.saulius.quantum_world.tools.FEEnergyImpl;
+import com.saulius.quantum_world.tools.ProgressScaleObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -25,31 +30,11 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BasicElectricityHolderEntity extends BlockEntity implements MenuProvider, AbstractModEnergy {
+public class CopperCableEntity extends BlockEntity {
+    private LazyOptional<IEnergyStorage> lazyOptEnergyHandler = LazyOptional.empty();
 
-    //protected final ContainerData data;
-    public BasicElectricityHolderEntity(BlockPos blockPos, BlockState blockState) {
-        super(BlockEntities.BASIC_ELECTRICITY_HOLDER_ENTITY.get(), blockPos, blockState);
-
-//        this.data = new ContainerData() {             //Container to hold values
-//            @Override
-//            public int get(int index) {
-//                return 0;
-//            }
-//            @Override
-//            public void set(int index, int value) {
-//
-//            }
-//            @Override
-//            public int getCount() {
-//                return 1;
-//            }
-//        };
-    }
-
-    @Override
-    public Component getDisplayName() {
-        return Component.literal("B.E.H.");
+    public CopperCableEntity(BlockPos blockPos, BlockState blockState) {
+        super(BlockEntities.COPPER_CABLE_ENTITY.get(), blockPos, blockState);
     }
 
     @Override
@@ -76,7 +61,6 @@ public class BasicElectricityHolderEntity extends BlockEntity implements MenuPro
         super.saveAdditional(compoundTag);
     }
 
-    private LazyOptional<IEnergyStorage> lazyOptEnergyHandler = LazyOptional.empty();
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction direction) {
@@ -86,26 +70,23 @@ public class BasicElectricityHolderEntity extends BlockEntity implements MenuPro
         return super.getCapability(cap, direction);
     }
 
-    private final FEEnergyImpl blockEnergy = new FEEnergyImpl(40000, 20) {
+    private final FEEnergyImpl blockEnergy = new FEEnergyImpl(100, 5) {
         @Override
         public void onEnergyChange() {
             setChanged();
         }
     };
 
-    public static void tick(Level level, BlockPos blockPos, BlockState blockState, BasicElectricityHolderEntity entity) {
-       if (!level.isClientSide) {
+    private static final int ENERGY_PER_TICK_FROM_ENERGIUM_INGOT = 5;
+    private final ProgressScaleObject blockProgress = new ProgressScaleObject(100);
 
-       }
+    public static void tick(Level level, BlockPos blockPos, BlockState blockState, CopperCableEntity entity) {
+        if (!level.isClientSide) {
+
+        }
     }
 
     public IEnergyStorage getEnergyStorage() {
         return blockEnergy;
-    }
-
-    @Nullable
-    @Override
-    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new BasicElectricityHolderMenu(id, inventory, this); //, this.data
     }
 }

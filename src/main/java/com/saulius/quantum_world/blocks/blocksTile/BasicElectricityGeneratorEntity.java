@@ -4,6 +4,7 @@ import com.saulius.quantum_world.blocks.blocksGui.BasicElectricityGeneratorGUI.B
 import com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking.AbstractModEnergyAndTick;
 import com.saulius.quantum_world.items.itemsRegistry.ItemsRegistry;
 import com.saulius.quantum_world.tools.FEEnergyImpl;
+import com.saulius.quantum_world.tools.ProgressScaleObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -33,7 +34,8 @@ public class BasicElectricityGeneratorEntity extends BlockEntity implements Menu
             setChanged();
         }
     };
-
+    private LazyOptional<IEnergyStorage> lazyOptEnergyHandler = LazyOptional.empty();
+    private LazyOptional<ProgressScaleObject> lazyOptBurnScale = LazyOptional.empty();
     private LazyOptional<IItemHandler> lazyOptItemHandler = LazyOptional.empty();
 
     public BasicElectricityGeneratorEntity(BlockPos blockPos, BlockState blockState) {
@@ -50,6 +52,7 @@ public class BasicElectricityGeneratorEntity extends BlockEntity implements Menu
         super.onLoad();
         lazyOptItemHandler = LazyOptional.of(() -> itemStackHandler);
         lazyOptEnergyHandler = LazyOptional.of(() -> blockEnergy);
+        lazyOptBurnScale = LazyOptional.of(() -> blockProgress);
     }
 
     @Override
@@ -57,6 +60,7 @@ public class BasicElectricityGeneratorEntity extends BlockEntity implements Menu
         super.invalidateCaps();
         lazyOptItemHandler.invalidate();
         lazyOptEnergyHandler.invalidate();
+        lazyOptBurnScale.invalidate();
     }
 
     @Override
@@ -64,23 +68,23 @@ public class BasicElectricityGeneratorEntity extends BlockEntity implements Menu
         super.load(compoundTag);
         itemStackHandler.deserializeNBT(compoundTag.getCompound("inventory"));
         blockEnergy.setEnergy(compoundTag.getInt("current_energy_amount"));
+        blockProgress.setScale(compoundTag.getInt("current_scale_amount"));
     }
 
     @Override
     protected void saveAdditional(CompoundTag compoundTag) {
         compoundTag.put("inventory", itemStackHandler.serializeNBT());
         compoundTag.putInt("current_energy_amount", blockEnergy.getEnergyStored());
+        compoundTag.putInt("current_scale_amount", blockProgress.getScale());
         super.saveAdditional(compoundTag);
     }
 
-    private LazyOptional<IEnergyStorage> lazyOptEnergyHandler = LazyOptional.empty();
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction direction) {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return lazyOptItemHandler.cast();
         }
-
         if (cap == CapabilityEnergy.ENERGY) {
             return lazyOptEnergyHandler.cast();
         }
@@ -93,18 +97,20 @@ public class BasicElectricityGeneratorEntity extends BlockEntity implements Menu
             setChanged();
         }
     };
-    private int scale = 0;
+
+    private static final int ENERGY_PER_TICK_FROM_ENERGIUM_INGOT = 5;
+    private final ProgressScaleObject blockProgress = new ProgressScaleObject(100);
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, BasicElectricityGeneratorEntity entity) {
         if (!level.isClientSide) {
-            if (entity.getScale() != 0) {
-                if (entity.getEnergyStorage().canReceive()) {
-                    entity.blockEnergy.receiveEnergy(5, false);
-                    entity.reduceScale();
+            if (entity.blockProgress.getScale() != 0) {
+                if (entity.blockEnergy.canReceive()) {
+                    entity.blockEnergy.receiveEnergy(ENERGY_PER_TICK_FROM_ENERGIUM_INGOT, false);
+                    entity.blockProgress.reduceScale();
                 }
             } else {
                 if (entity.itemStackHandler.getStackInSlot(0).getItem() == ItemsRegistry.ENERGIUM_INGOT.get()) {
-                    entity.setScale(100);
+                    entity.blockProgress.resetScale();
                     entity.itemStackHandler.extractItem(0, 1, false);
                 }
             }
@@ -115,11 +121,9 @@ public class BasicElectricityGeneratorEntity extends BlockEntity implements Menu
         return blockEnergy;
     }
 
-    @Override
-    public int getScale() { return scale;}
-    public void setScale(int scale) { this.scale = scale;}
-
-    public void reduceScale() { this.scale--;}
+    public ProgressScaleObject getProgressScale() {
+        return blockProgress;
+    }
 
     @Nullable
     @Override
