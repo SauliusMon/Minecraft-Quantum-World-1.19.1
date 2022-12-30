@@ -1,18 +1,13 @@
 package com.saulius.quantum_world.blocks.advancedBlocks;
 
-import com.saulius.quantum_world.blocks.blocksTile.BasicElectricityHolderEntity;
 import com.saulius.quantum_world.blocks.blocksTile.BlockEntities;
 import com.saulius.quantum_world.blocks.blocksTile.CopperCableEntity;
 import com.saulius.quantum_world.items.itemsRegistry.ItemsRegistry;
 import com.saulius.quantum_world.tools.CableShape;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -24,19 +19,14 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.extensions.IForgeBlockState;
-import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.client.extensions.common.IClientBlockExtensions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import java.util.function.Consumer;
 
 public class CopperCableBlock extends BaseEntityBlock {
     private final CableShape cableShape = new CableShape();
@@ -54,6 +44,10 @@ public class CopperCableBlock extends BaseEntityBlock {
 
     @Override
     public @NotNull VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
+        BlockEntity blockEntity = blockGetter.getBlockEntity(blockPos);
+        if (blockEntity instanceof CopperCableEntity) {
+            return ((CopperCableEntity) blockEntity).getShape();
+        }
         return currentCableShape;
     }
 
@@ -73,14 +67,9 @@ public class CopperCableBlock extends BaseEntityBlock {
     @Override
     public InteractionResult use (BlockState blockState, Level level, BlockPos blockPos, Player player,
                                   InteractionHand interactionHand, BlockHitResult blockHitResult) {
-
-        //        CopperCableEntity blockEntity = (CopperCableEntity) level.getBlockEntity(blockPos);
-//        COPPER_CABLE_CENTER = blockEntity.addBlockShape(COPPER_CABLE_CENTER, Direction.UP);
-
         if (!level.isClientSide) {
             if (player.getItemInHand(interactionHand).is(ItemsRegistry.IRON_WRENCH.get())) {
-                currentCableShape = cableShape.updateBlockShape(blockHitResult.getDirection(), level, blockPos, blockState);
-                Vec3 vec = blockHitResult.getLocation();
+                currentCableShape = cableShape.updateBlockShape(currentCableShape, level, blockPos, blockState, blockHitResult);
             }
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
@@ -91,6 +80,11 @@ public class CopperCableBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> tBlockEntityType) {
         return createTickerHelper(tBlockEntityType, BlockEntities.COPPER_CABLE_ENTITY.get(),
                 CopperCableEntity::tick);
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientBlockExtensions> consumer) {
+        super.initializeClient(consumer);
     }
 
     //If enum variable isn't static, game crashes

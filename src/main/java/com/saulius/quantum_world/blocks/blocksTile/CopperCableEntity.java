@@ -1,37 +1,30 @@
 package com.saulius.quantum_world.blocks.blocksTile;
 
-import com.saulius.quantum_world.blocks.advancedBlocks.CopperCableBlock;
-import com.saulius.quantum_world.blocks.blocksGui.BasicElectricityGeneratorGUI.BasicElectricityGeneratorMenu;
-import com.saulius.quantum_world.items.itemsRegistry.ItemsRegistry;
 import com.saulius.quantum_world.tools.FEEnergyImpl;
 import com.saulius.quantum_world.tools.ProgressScaleObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class CopperCableEntity extends BlockEntity {
     private LazyOptional<IEnergyStorage> lazyOptEnergyHandler = LazyOptional.empty();
+
+    private VoxelShape currentCableShape = Block.box(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D);
+
+    public VoxelShape getShape () {
+        return currentCableShape;
+    }
 
     public CopperCableEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockEntities.COPPER_CABLE_ENTITY.get(), blockPos, blockState);
