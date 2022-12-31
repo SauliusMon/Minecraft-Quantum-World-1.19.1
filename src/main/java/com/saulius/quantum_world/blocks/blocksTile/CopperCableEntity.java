@@ -1,5 +1,6 @@
 package com.saulius.quantum_world.blocks.blocksTile;
 
+import com.saulius.quantum_world.tools.CableShape;
 import com.saulius.quantum_world.tools.FEEnergyImpl;
 import com.saulius.quantum_world.tools.ProgressScaleObject;
 import net.minecraft.core.BlockPos;
@@ -9,6 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -20,14 +22,24 @@ import org.jetbrains.annotations.Nullable;
 public class CopperCableEntity extends BlockEntity {
     private LazyOptional<IEnergyStorage> lazyOptEnergyHandler = LazyOptional.empty();
 
-    private VoxelShape currentCableShape = Block.box(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D);
+    private VoxelShape currentCableShape;
+    private final CableShape cableShapeObject = new CableShape();
 
     public VoxelShape getShape () {
         return currentCableShape;
     }
 
+    public void setShape (VoxelShape shape) {
+        currentCableShape = shape;
+    }
+
+    public void updateBlockShapeOnWrenchHit (Level level, BlockPos blockPos, BlockState blockState, BlockHitResult blockHitResult) {
+        this.setShape(cableShapeObject.updateBlockShape(currentCableShape, level, blockPos, blockState, blockHitResult));
+    }
+
     public CopperCableEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockEntities.COPPER_CABLE_ENTITY.get(), blockPos, blockState);
+        setShape(Block.box(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D));
     }
 
     @Override

@@ -1,9 +1,11 @@
 package com.saulius.quantum_world.tools;
 
 import com.saulius.quantum_world.blocks.advancedBlocks.CopperCableBlock;
+import com.saulius.quantum_world.blocks.blocksTile.CopperCableEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -100,11 +102,11 @@ public class CableShape {
         } else if (hitVec.y < pos.getY() + whichSide) {
             direction = Direction.DOWN;
             boolCenter = false;
+        }  else if (hitVec.z > pos.getZ() + whichSide + center) {
+            direction = Direction.SOUTH;
+            boolCenter = false;
         } else if (hitVec.z < pos.getZ() + whichSide) {
             direction = Direction.NORTH;
-            boolCenter = false;
-        } else if (hitVec.z > pos.getZ() + whichSide + center) {
-            direction = Direction.SOUTH;
             boolCenter = false;
         } else if (hitVec.x > pos.getX() + whichSide + center) {
             direction = Direction.EAST;
@@ -154,5 +156,32 @@ public class CableShape {
             cableShape = Shapes.or(cableShape, CABLE_SOUTH);
         }
         return cableShape;
+    }
+
+    public static void addShape (CopperCableEntity cableEntity, Direction direction, Level level, BlockPos blockPos, BlockState blockState) {
+        level.setBlock(blockPos, blockState.setValue(EnergyUtils.getEnumPropertyFromDirection(direction), CopperCableBlock.Connection.CONNECTED), 3);
+        cableEntity.setChanged();
+
+        System.out.println(blockState.getValue(EnergyUtils.getEnumPropertyFromDirection(direction))  + " " + direction + " " + blockPos + " ");
+
+        cableEntity.setShape(Shapes.or(cableEntity.getShape(), getShapeFromDirection(direction)));
+        cableEntity.setChanged();
+    }
+
+    public static void removeShape (CopperCableEntity cableEntity, Direction direction, Level level, BlockPos blockPos, BlockState blockState) {
+        level.setBlock(blockPos, blockState.setValue(EnergyUtils.getEnumPropertyFromDirection(direction), Connection.NOT_CONNECTED), 3);
+        cableEntity.setShape(Shapes.join(cableEntity.getShape(), getShapeFromDirection(direction), BooleanOp.ONLY_FIRST));
+    }
+
+    private static VoxelShape getShapeFromDirection (Direction direction) {
+        switch (direction) {
+            case UP -> { return CABLE_UP; }
+            case DOWN -> { return CABLE_DOWN; }
+            case EAST -> { return CABLE_EAST; }
+            case WEST -> { return CABLE_WEST; }
+            case NORTH -> { return CABLE_NORTH; }
+            case SOUTH -> { return CABLE_SOUTH; }
+        }
+        return CABLE_UP;
     }
 }
