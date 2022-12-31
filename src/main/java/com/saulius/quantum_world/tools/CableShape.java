@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -26,63 +27,30 @@ public class CableShape {
     private static final VoxelShape CABLE_WEST = Block.box(0.0D, 6.0D, 6.0D, 6.0D, 10.0D, 10.0D);
 
 
-    public VoxelShape updateBlockShape (VoxelShape cableShape, Level level, BlockPos blockPos, BlockState blockState, BlockHitResult blockHitResult) {
+    public void updateBlockShape (CopperCableEntity cableEntity, Level level, BlockPos blockPos, BlockState blockState, BlockHitResult blockHitResult) {
 
         DirectionAndBool directionAndBool = calcSideOnWrenchUse(blockPos, blockHitResult);
         Direction direction = directionAndBool.getDirection();
         Boolean shouldAdd = !directionAndBool.getBool();
 
-        switch (direction) {
-            case UP -> {
-                if (shouldAdd) {
-                    level.setBlock(blockPos, blockState.setValue(CONN_UP, Connection.NOT_CONNECTED), 3);
-                    return Shapes.join(cableShape, CABLE_UP, BooleanOp.ONLY_FIRST);
+        if (shouldAdd) {
+            removeShape(cableEntity, direction, level, blockPos, blockState);
+            BlockPos neighborBlockPos = blockPos.relative(direction);
+            if (level.getBlockEntity(neighborBlockPos) instanceof CopperCableEntity) {
+                CopperCableEntity neighborBlockEntity = (CopperCableEntity) level.getBlockEntity(neighborBlockPos);
+                if (neighborBlockEntity.getBlockState().getValue(EnergyUtils.getEnumPropertyFromDirection(direction.getOpposite())).isConnected()) {
+                    removeShape(neighborBlockEntity, direction.getOpposite(), level, neighborBlockPos, neighborBlockEntity.getBlockState());
                 }
-                level.setBlock(blockPos, blockState.setValue(CONN_UP, CopperCableBlock.Connection.CONNECTED), 3);
-                return Shapes.or(cableShape, CABLE_UP);
             }
-            case DOWN -> {
-                if (shouldAdd) {
-                    level.setBlock(blockPos, blockState.setValue(CONN_DOWN, Connection.NOT_CONNECTED), 3);
-                    return Shapes.join(cableShape, CABLE_DOWN, BooleanOp.ONLY_FIRST);
+        }
+        else {
+            addShape(cableEntity, direction, level, blockPos, blockState);
+            BlockPos neighborBlockPos = blockPos.relative(direction);
+            if (level.getBlockEntity(neighborBlockPos) instanceof CopperCableEntity) {
+                CopperCableEntity neighborBlockEntity = (CopperCableEntity) level.getBlockEntity(neighborBlockPos);
+                if (!neighborBlockEntity.getBlockState().getValue(EnergyUtils.getEnumPropertyFromDirection(direction.getOpposite())).isConnected()) {
+                    addShape(neighborBlockEntity, direction.getOpposite(), level, neighborBlockPos, neighborBlockEntity.getBlockState());
                 }
-                level.setBlock(blockPos, blockState.setValue(CONN_DOWN, CopperCableBlock.Connection.CONNECTED), 3);
-                return Shapes.or(cableShape, CABLE_DOWN);
-            }
-            case EAST -> {
-                if (shouldAdd) {
-                    level.setBlock(blockPos, blockState.setValue(CONN_EAST, Connection.NOT_CONNECTED), 3);
-                    return Shapes.join(cableShape, CABLE_EAST, BooleanOp.ONLY_FIRST);
-                }
-                level.setBlock(blockPos, blockState.setValue(CONN_EAST, CopperCableBlock.Connection.CONNECTED), 3);
-                return Shapes.or(cableShape, CABLE_EAST);
-            }
-            case WEST -> {
-                if (shouldAdd) {
-                    level.setBlock(blockPos, blockState.setValue(CONN_WEST, Connection.NOT_CONNECTED), 3);
-                    return Shapes.join(cableShape, CABLE_WEST, BooleanOp.ONLY_FIRST);
-                }
-                level.setBlock(blockPos, blockState.setValue(CONN_WEST, CopperCableBlock.Connection.CONNECTED), 3);
-                return Shapes.or(cableShape, CABLE_WEST);
-            }
-            case NORTH -> {
-                if (shouldAdd) {
-                    level.setBlock(blockPos, blockState.setValue(CONN_NORTH, Connection.NOT_CONNECTED), 3);
-                    return Shapes.join(cableShape, CABLE_NORTH, BooleanOp.ONLY_FIRST);
-                }
-                level.setBlock(blockPos, blockState.setValue(CONN_NORTH, CopperCableBlock.Connection.CONNECTED), 3);
-                return Shapes.or(cableShape, CABLE_NORTH);
-            }
-            case SOUTH -> {
-                if (shouldAdd) {
-                    level.setBlock(blockPos, blockState.setValue(CONN_SOUTH, Connection.NOT_CONNECTED), 3);
-                    return Shapes.join(cableShape, CABLE_SOUTH, BooleanOp.ONLY_FIRST);
-                }
-                level.setBlock(blockPos, blockState.setValue(CONN_SOUTH, CopperCableBlock.Connection.CONNECTED), 3);
-                return Shapes.or(cableShape, CABLE_SOUTH);
-            }
-            default -> {
-                return cableShape;
             }
         }
     }
@@ -160,10 +128,6 @@ public class CableShape {
 
     public static void addShape (CopperCableEntity cableEntity, Direction direction, Level level, BlockPos blockPos, BlockState blockState) {
         level.setBlock(blockPos, blockState.setValue(EnergyUtils.getEnumPropertyFromDirection(direction), CopperCableBlock.Connection.CONNECTED), 3);
-        cableEntity.setChanged();
-
-        System.out.println(blockState.getValue(EnergyUtils.getEnumPropertyFromDirection(direction))  + " " + direction + " " + blockPos + " ");
-
         cableEntity.setShape(Shapes.or(cableEntity.getShape(), getShapeFromDirection(direction)));
         cableEntity.setChanged();
     }
@@ -171,6 +135,7 @@ public class CableShape {
     public static void removeShape (CopperCableEntity cableEntity, Direction direction, Level level, BlockPos blockPos, BlockState blockState) {
         level.setBlock(blockPos, blockState.setValue(EnergyUtils.getEnumPropertyFromDirection(direction), Connection.NOT_CONNECTED), 3);
         cableEntity.setShape(Shapes.join(cableEntity.getShape(), getShapeFromDirection(direction), BooleanOp.ONLY_FIRST));
+        cableEntity.setChanged();
     }
 
     private static VoxelShape getShapeFromDirection (Direction direction) {

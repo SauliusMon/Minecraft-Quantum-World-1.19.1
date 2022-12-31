@@ -84,4 +84,26 @@ public class EnergyUtils {
         }
         return CONN_UP;
     }
+
+    // Maybe will need?
+    private Direction neighborDirection (BlockPos mainBlockPos, BlockPos neighborBlockPos) {
+        if (mainBlockPos.getY() < neighborBlockPos.getY()) {
+            return Direction.UP;
+        }
+        else if (mainBlockPos.getY() > neighborBlockPos.getY()) {
+            return Direction.DOWN;
+        }
+        else if (mainBlockPos.getZ() < neighborBlockPos.getZ()) {
+            return Direction.SOUTH;
+        }
+        else if (mainBlockPos.getZ() > neighborBlockPos.getZ()) {
+            return Direction.NORTH;
+        }
+        else if (mainBlockPos.getX() < neighborBlockPos.getX()) {
+            return Direction.EAST;
+        }
+        else {
+            return Direction.WEST;
+        }
+    }
 }

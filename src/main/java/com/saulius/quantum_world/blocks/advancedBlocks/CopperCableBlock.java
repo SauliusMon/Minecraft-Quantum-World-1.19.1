@@ -17,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -75,22 +76,16 @@ public class CopperCableBlock extends BaseEntityBlock {
         return RenderShape.MODEL;
     }
 
+
+    // Use, Placed and Destroyed are all in both server / client side
     @Override
     public InteractionResult use (BlockState blockState, Level level, BlockPos blockPos, Player player,
                                   InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        //if (!level.isClientSide) {
-            if (player.getItemInHand(interactionHand).is(ItemsRegistry.IRON_WRENCH.get())) {
-                CopperCableEntity cableEntity = (CopperCableEntity) level.getBlockEntity(blockPos);
-                cableEntity.updateBlockShapeOnWrenchHit(level, blockPos, blockState, blockHitResult);
-                cableEntity.setChanged();
-            }
-       // }
+        if (player.getItemInHand(interactionHand).is(ItemsRegistry.IRON_WRENCH.get())) {
+            CopperCableEntity cableEntity = (CopperCableEntity) level.getBlockEntity(blockPos);
+            cableEntity.updateBlockShapeOnWrenchHit(level, blockPos, blockState, blockHitResult);
+        }
         return InteractionResult.sidedSuccess(level.isClientSide);
-    }
-
-    @Override
-    protected ImmutableMap<BlockState, VoxelShape> getShapeForEachState(Function<BlockState, VoxelShape> p_152459_) {
-        return super.getShapeForEachState(p_152459_);
     }
 
     @Override
@@ -99,63 +94,45 @@ public class CopperCableBlock extends BaseEntityBlock {
         if (!nearbyBlockEntities.isEmpty()) {
             for (EnergyUtils.BlockEntityWithOriginDirection blockEntityWithOriginDirection : nearbyBlockEntities) {
                 CopperCableEntity neighboringEnergyEntity = blockEntityWithOriginDirection.getCopperCableEntity();
-                System.out.println(blockPos);
-                System.out.println(neighboringEnergyEntity.getBlockPos());
-
                 Direction originDirection = blockEntityWithOriginDirection.getOriginDirection();
+
                 if (EnergyUtils.isCableEntity(neighboringEnergyEntity)) {
                     BlockState neighborBlockState = neighboringEnergyEntity.getBlockState();
                     CopperCableEntity callerCableEntity = (CopperCableEntity) level.getBlockEntity(blockPos);
+
                     if (!neighborBlockState.getValue(EnergyUtils.getEnumPropertyFromDirection(originDirection.getOpposite())).isConnected()) {
                         CableShape.addShape(callerCableEntity, originDirection, level, blockPos, callerCableEntity.getBlockState());
                         CableShape.addShape(neighboringEnergyEntity, originDirection.getOpposite(), level, blockPos.relative(originDirection), neighborBlockState);
                         /*
                         Note:
-                        If passed blockState is used in method for main block, main entity blockState doesn't change
+                        If passed blockState is used in method for main block, main entity blockState doesn't change in some cases
                         Need to use callerCableEntity.getBlockState() method
-                        Maybe blockState passed here is immutable?
+                        Maybe blockState passed here has some kind of immutability?
                         */
                     }
                 }
             }
-
-
-//                Direction direction = neighborDirection(mainBlockPos, neighborBlockPos);
-//                CableShape.addShape((CopperCableEntity) neighboringBlockEntity, direction.getOpposite(), level, neighborBlockPos, neighboringBlockEntity.getBlockState());
-//                CableShape.addShape((CopperCableEntity) level.getBlockEntity(mainBlockPos), direction, level, mainBlockPos, blockState);
-//                neighboringBlockEntity.setChanged();
-//                ((CopperCableEntity) level.getBlockEntity(mainBlockPos)).setChanged();
-
         }
         super.setPlacedBy(level, blockPos, blockState, livingEntity, itemStack);
     }
 
     @Override
-    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
-    }
+    public boolean onDestroyedByPlayer(BlockState blockState, Level level, BlockPos blockPos, Player player, boolean willHarvest, FluidState fluidState) {
+        ArrayList<EnergyUtils.BlockEntityWithOriginDirection> nearbyBlockEntities = new EnergyUtils().getNearbyEnergyBlockEntities(level, blockPos);
+        if (!nearbyBlockEntities.isEmpty()) {
+            for (EnergyUtils.BlockEntityWithOriginDirection blockEntityWithOriginDirection : nearbyBlockEntities) {
+                CopperCableEntity neighboringEnergyEntity = blockEntityWithOriginDirection.getCopperCableEntity();
+                Direction originDirection = blockEntityWithOriginDirection.getOriginDirection();
 
-
-
-    private Direction neighborDirection (BlockPos mainBlockPos, BlockPos neighborBlockPos) {
-        if (mainBlockPos.getY() < neighborBlockPos.getY()) {
-            return Direction.UP;
+                if (EnergyUtils.isCableEntity(neighboringEnergyEntity)) {
+                    BlockState neighborBlockState = neighboringEnergyEntity.getBlockState();
+                    if (neighborBlockState.getValue(EnergyUtils.getEnumPropertyFromDirection(originDirection.getOpposite())).isConnected()) {
+                        CableShape.removeShape(neighboringEnergyEntity, originDirection.getOpposite(), level, blockPos.relative(originDirection), neighborBlockState);
+                    }
+                }
+            }
         }
-        else if (mainBlockPos.getY() > neighborBlockPos.getY()) {
-            return Direction.DOWN;
-        }
-        else if (mainBlockPos.getZ() < neighborBlockPos.getZ()) {
-            return Direction.SOUTH;
-        }
-        else if (mainBlockPos.getZ() > neighborBlockPos.getZ()) {
-            return Direction.NORTH;
-        }
-        else if (mainBlockPos.getX() < neighborBlockPos.getX()) {
-            return Direction.EAST;
-        }
-        else {
-            return Direction.WEST;
-        }
+        return super.onDestroyedByPlayer(blockState, level, blockPos, player, willHarvest, fluidState);
     }
 
     @Nullable

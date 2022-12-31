@@ -34,12 +34,14 @@ public class CopperCableEntity extends BlockEntity {
     }
 
     public void updateBlockShapeOnWrenchHit (Level level, BlockPos blockPos, BlockState blockState, BlockHitResult blockHitResult) {
-        this.setShape(cableShapeObject.updateBlockShape(currentCableShape, level, blockPos, blockState, blockHitResult));
+        cableShapeObject.updateBlockShape(this, level, blockPos, blockState, blockHitResult);
+        this.setChanged();
     }
 
     public CopperCableEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockEntities.COPPER_CABLE_ENTITY.get(), blockPos, blockState);
         setShape(Block.box(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D));
+        setShape(cableShapeObject.onLoadCableShape(currentCableShape, level, getBlockPos(), getBlockState()));
     }
 
     @Override
@@ -66,7 +68,6 @@ public class CopperCableEntity extends BlockEntity {
         super.saveAdditional(compoundTag);
     }
 
-
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction direction) {
         if (cap == CapabilityEnergy.ENERGY) {
@@ -81,9 +82,6 @@ public class CopperCableEntity extends BlockEntity {
             setChanged();
         }
     };
-
-    private static final int ENERGY_PER_TICK_FROM_ENERGIUM_INGOT = 5;
-    private final ProgressScaleObject blockProgress = new ProgressScaleObject(100);
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, CopperCableEntity entity) {
         if (!level.isClientSide) {
