@@ -69,8 +69,8 @@ public class BasicElectricityHolderScreen extends AbstractContainerScreen<BasicE
 
     private void redrawBatteries(PoseStack poseStack, int imageLocX, int imageLocY) {
         int energyAmount = menu.blockEntity.getEnergyStorage().getEnergyStored();
-        int amountOfBatteriesFullyFilled = energyAmount / 2500;
-        int partiallyFilledBattery = energyAmount % 2500;
+        int amountOfBatteriesFullyFilled = energyAmount / 10_000;
+        int partiallyFilledBattery = energyAmount % 10_000;
         int energyAmountScale = Math.max(0, Math.min(60, partiallyFilledBattery / (menu.blockEntity.getEnergyStorage().getMaxEnergyStored() / 4 / 60)));
 
         // blit(start of rectangle being replaced X-Y start of rectangle to replace with X-Y, replacing rectangle size X-Y)

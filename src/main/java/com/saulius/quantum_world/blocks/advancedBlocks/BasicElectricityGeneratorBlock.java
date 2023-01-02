@@ -1,10 +1,8 @@
 package com.saulius.quantum_world.blocks.advancedBlocks;
 
 import com.saulius.quantum_world.blocks.blocksTile.BasicElectricityGeneratorEntity;
-import com.saulius.quantum_world.blocks.blocksTile.BasicElectricityHolderEntity;
 import com.saulius.quantum_world.blocks.blocksTile.BlockEntities;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
