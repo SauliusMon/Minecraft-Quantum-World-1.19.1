@@ -34,7 +34,7 @@ public class ClientEnergySync {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
             AbstractModEnergy blockEntity = (AbstractModEnergy) Minecraft.getInstance().level.getBlockEntity(blockPos);
-            ((FEEnergyImpl) blockEntity.getEnergyStorage()).setEnergy(currentEnergyStored);
+            blockEntity.getEnergyStorage().setEnergy(currentEnergyStored);
         });
         return true;
     }

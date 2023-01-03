@@ -101,7 +101,7 @@ public class CableShape {
         }
     }
 
-    public VoxelShape onLoadCableShape(VoxelShape cableShape, Level level, BlockPos blockPos, BlockState blockState) {
+    public VoxelShape onLoadCableShape(VoxelShape cableShape, BlockState blockState) {
         if(blockState.getValue(CONN_UP).isConnected()) {
             cableShape = Shapes.or(cableShape, CABLE_UP);
         }

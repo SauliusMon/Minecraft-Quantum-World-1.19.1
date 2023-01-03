@@ -9,6 +9,6 @@ import net.minecraft.world.phys.BlockHitResult;
 public class CopperCableEntity extends CableBaseEntity {
 
     public CopperCableEntity(BlockPos blockPos, BlockState blockState) {
-        super(BlockEntities.COPPER_CABLE_ENTITY.get(), blockPos, blockState, 30, 5);
+        super(BlockEntities.COPPER_CABLE_ENTITY.get(), blockPos, blockState, 30, 10,5);
     }
 }

@@ -2,6 +2,7 @@ package com.saulius.quantum_world.blocks.blocksTile;
 
 import com.saulius.quantum_world.blocks.blocksGui.BasicElectricityHolderGUI.BasicElectricityHolderMenu;
 import com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking.AbstractModEnergy;
+import com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking.AbstractModEntity;
 import com.saulius.quantum_world.tools.FEEnergyImpl;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,7 +22,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BasicElectricityHolderEntity extends BlockEntity implements MenuProvider, AbstractModEnergy {
+public class BasicElectricityHolderEntity extends BlockEntity implements MenuProvider, AbstractModEntity {
 
     //protected final ContainerData data;
     public BasicElectricityHolderEntity(BlockPos blockPos, BlockState blockState) {
@@ -95,7 +96,7 @@ public class BasicElectricityHolderEntity extends BlockEntity implements MenuPro
        }
     }
 
-    public IEnergyStorage getEnergyStorage() {
+    public FEEnergyImpl getEnergyStorage() {
         return blockEnergy;
     }
 
@@ -104,4 +105,6 @@ public class BasicElectricityHolderEntity extends BlockEntity implements MenuPro
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
         return new BasicElectricityHolderMenu(id, inventory, this); //, this.data
     }
+
+    public BlockEntity getEntity() { return level.getBlockEntity(getBlockPos()); }
 }

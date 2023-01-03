@@ -3,6 +3,7 @@ package com.saulius.quantum_world.blocks.blocksTile;
 import com.saulius.quantum_world.blocks.blocksGui.BasicElectricityGeneratorGUI.BasicElectricityGeneratorMenu;
 import com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking.AbstractModEnergy;
 import com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking.AbstractModEnergyAndTick;
+import com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking.AbstractModEntity;
 import com.saulius.quantum_world.items.itemsRegistry.ItemsRegistry;
 import com.saulius.quantum_world.tools.EnergyUtils;
 import com.saulius.quantum_world.tools.FEEnergyImpl;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
 
 import static com.saulius.quantum_world.blocks.advancedBlocks.BasicElectricityGeneratorBlock.FACING;
 
-public class BasicElectricityGeneratorEntity extends BlockEntity implements MenuProvider, AbstractModEnergyAndTick {
+public class BasicElectricityGeneratorEntity extends BlockEntity implements MenuProvider, AbstractModEnergyAndTick, AbstractModEntity {
 
     private final ItemStackHandler itemStackHandler = new ItemStackHandler(1) {
         @Override
@@ -142,13 +143,15 @@ public class BasicElectricityGeneratorEntity extends BlockEntity implements Menu
         }
     }
 
-    public IEnergyStorage getEnergyStorage() {
+    public FEEnergyImpl getEnergyStorage() {
         return blockEnergy;
     }
 
     public ProgressScaleObject getProgressScale() {
         return blockProgress;
     }
+
+    public BlockEntity getEntity() { return level.getBlockEntity(getBlockPos()); }
 
     @Nullable
     @Override
