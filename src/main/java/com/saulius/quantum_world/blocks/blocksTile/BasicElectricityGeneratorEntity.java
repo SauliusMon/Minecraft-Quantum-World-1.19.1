@@ -3,7 +3,7 @@ package com.saulius.quantum_world.blocks.blocksTile;
 import com.saulius.quantum_world.blocks.blocksGui.BasicElectricityGeneratorGUI.BasicElectricityGeneratorMenu;
 import com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking.AbstractModEnergy;
 import com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking.AbstractModEnergyAndTick;
-import com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking.AbstractModEntity;
+import com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking.AbstractModEnergyAndEntity;
 import com.saulius.quantum_world.items.itemsRegistry.ItemsRegistry;
 import com.saulius.quantum_world.tools.EnergyUtils;
 import com.saulius.quantum_world.tools.FEEnergyImpl;
@@ -17,7 +17,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -30,11 +29,9 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-
 import static com.saulius.quantum_world.blocks.advancedBlocks.BasicElectricityGeneratorBlock.FACING;
 
-public class BasicElectricityGeneratorEntity extends BlockEntity implements MenuProvider, AbstractModEnergyAndTick, AbstractModEntity {
+public class BasicElectricityGeneratorEntity extends BlockEntity implements MenuProvider, AbstractModEnergyAndTick, AbstractModEnergyAndEntity {
 
     private final ItemStackHandler itemStackHandler = new ItemStackHandler(1) {
         @Override
@@ -113,9 +110,9 @@ public class BasicElectricityGeneratorEntity extends BlockEntity implements Menu
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, BasicElectricityGeneratorEntity entity) {
         if (!level.isClientSide) {
-            //Sending energy:
             if (entity.getEnergyStorage().getEnergyStored() > 0) {
-                if (EnergyUtils.canSendToNeighbor(level, blockPos, blockState.getValue(FACING).getOpposite())) {
+                if (EnergyUtils.canSendToNeighbor(level.getBlockEntity(blockPos.relative(blockState.getValue(FACING).getOpposite())),
+                        blockState.getValue(FACING))) {
                     AbstractModEnergy neighboringBlockEntity = (AbstractModEnergy) level.getBlockEntity(
                             blockPos.relative(blockState.getValue(FACING).getOpposite()));
                     if (entity.getEnergyStorage().getEnergyStored() >= MAX_ENERGY_SENT_PER_TICK) {

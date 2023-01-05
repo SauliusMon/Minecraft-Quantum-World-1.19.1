@@ -1,6 +1,6 @@
 package com.saulius.quantum_world.tools;
 
-import com.saulius.quantum_world.blocks.blocksTile.CableBaseEntity;
+import com.saulius.quantum_world.blocks.blocksTile.cables.CableBaseEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -12,7 +12,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import static com.saulius.quantum_world.blocks.advancedBlocks.CableBaseBlock.*;
+import static com.saulius.quantum_world.blocks.advancedBlocks.cables.CableBaseBlock.*;
 
 public class CableShape {
 

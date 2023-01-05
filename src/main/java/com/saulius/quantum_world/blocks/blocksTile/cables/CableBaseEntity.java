@@ -1,7 +1,6 @@
-package com.saulius.quantum_world.blocks.blocksTile;
+package com.saulius.quantum_world.blocks.blocksTile.cables;
 
-import com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking.AbstractModEnergy;
-import com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking.AbstractModEntity;
+import com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking.AbstractModEnergyAndEntity;
 import com.saulius.quantum_world.tools.CableShape;
 import com.saulius.quantum_world.tools.EnergyUtils;
 import com.saulius.quantum_world.tools.FEEnergyImpl;
@@ -24,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public abstract class CableBaseEntity extends BlockEntity implements AbstractModEntity {
+public abstract class CableBaseEntity extends BlockEntity implements AbstractModEnergyAndEntity {
 
     private LazyOptional<IEnergyStorage> lazyOptEnergyHandler = LazyOptional.empty();
 
@@ -88,13 +87,13 @@ public abstract class CableBaseEntity extends BlockEntity implements AbstractMod
     /* In a case there is a ReceiverBlock in ArrayList, maximum energy cable can send is being sent to it
        Shuffle is needed to stop looping between cable blocks. Not an efficient solution.
      */
-    public static void tick(Level level, BlockPos blockPos, BlockState blockState, CopperCableEntity entity) {
+    public static void tick(Level level, BlockPos blockPos, BlockState blockState, CableBaseEntity entity) {
         if (!level.isClientSide) {
-            ArrayList<AbstractModEntity> neighboringConnectedEnergyEntities = EnergyUtils.getNearbyEnergyReceivers(level, blockPos);
+            ArrayList<AbstractModEnergyAndEntity> neighboringConnectedEnergyEntities = EnergyUtils.getNearbyEnergyReceivers(level, blockPos);
             if (!neighboringConnectedEnergyEntities.isEmpty()) {
                 int powerToSend = Math.min(entity.getEnergyStorage().getEnergyStored() / neighboringConnectedEnergyEntities.size(), entity.getEnergyStorage().getMaxSend());
                 for (int x = 0; x < neighboringConnectedEnergyEntities.size(); x++) {
-                    AbstractModEntity energyEntity = neighboringConnectedEnergyEntities.get(x);
+                    AbstractModEnergyAndEntity energyEntity = neighboringConnectedEnergyEntities.get(x);
                     if (x == 0) {
                         if (powerToSend == 0 && entity.getEnergyStorage().getEnergyStored() > 0) {
                             Collections.shuffle(neighboringConnectedEnergyEntities);

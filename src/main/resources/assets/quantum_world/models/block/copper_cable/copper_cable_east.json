@@ -1,7 +1,7 @@
 {
   "textures": {
-    "copper_cable": "quantum_world:block/copper_cable/copper_cable_side",
-    "copper_cable_center": "quantum_world:block/copper_cable/copper_cable"
+    "copper_cable": "quantum_world:block/cable_side",
+    "copper_cable_center": "quantum_world:block/copper_cable"
   },
   "elements": [
     {

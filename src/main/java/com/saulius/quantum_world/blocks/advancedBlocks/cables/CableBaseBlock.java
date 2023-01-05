@@ -1,8 +1,6 @@
-package com.saulius.quantum_world.blocks.advancedBlocks;
+package com.saulius.quantum_world.blocks.advancedBlocks.cables;
 
-import com.saulius.quantum_world.blocks.blocksTile.CableBaseEntity;
-import com.saulius.quantum_world.blocks.blocksTile.CopperCableEntity;
-import com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking.AbstractModEnergy;
+import com.saulius.quantum_world.blocks.blocksTile.cables.CableBaseEntity;
 import com.saulius.quantum_world.items.itemsRegistry.ItemsRegistry;
 import com.saulius.quantum_world.tools.CableShape;
 import com.saulius.quantum_world.tools.EnergyUtils;
@@ -45,8 +43,8 @@ public abstract class CableBaseBlock extends BaseEntityBlock {
     @Override
     public @NotNull VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         BlockEntity blockEntity = blockGetter.getBlockEntity(blockPos);
-        if (blockEntity instanceof CopperCableEntity) {
-            return ((CopperCableEntity) blockEntity).getShape();
+        if (blockEntity instanceof CableBaseEntity) {
+            return ((CableBaseEntity) blockEntity).getShape();
         }
         return CABLE_SHAPE_CENTER;
     }
@@ -63,7 +61,6 @@ public abstract class CableBaseBlock extends BaseEntityBlock {
                                   InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (player.getItemInHand(interactionHand).is(ItemsRegistry.IRON_WRENCH.get())) {
             CableBaseEntity cableEntity = (CableBaseEntity) level.getBlockEntity(blockPos);
-            //cableEntity.updateBlockShapeOnWrenchHit(level, blockPos, blockState, blockHitResult);
             CableShape.updateBlockShape(cableEntity, level, blockPos, blockState, blockHitResult);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
@@ -74,26 +71,33 @@ public abstract class CableBaseBlock extends BaseEntityBlock {
         ArrayList<EnergyUtils.BlockEntityWithOriginDirection> nearbyBlockEntities = new EnergyUtils().getNearbyEnergyBlockEntities(level, blockPos);
         if (!nearbyBlockEntities.isEmpty()) {
             for (EnergyUtils.BlockEntityWithOriginDirection blockEntityWithOriginDirection : nearbyBlockEntities) {
-                BlockEntity neighboringEnergyEntity = blockEntityWithOriginDirection.getBaseEntity();
+                BlockEntity neighboringEntity = blockEntityWithOriginDirection.getBaseEntity();
                 Direction originDirection = blockEntityWithOriginDirection.getOriginDirection();
 
-                if (EnergyUtils.isCableEntity(neighboringEnergyEntity)) {
-                    BlockState neighborBlockState = neighboringEnergyEntity.getBlockState();
+                if (EnergyUtils.isCableEntity(neighboringEntity)) {
+                    BlockState neighborBlockState = neighboringEntity.getBlockState();
                     CableBaseEntity callerCableEntity = (CableBaseEntity) level.getBlockEntity(blockPos);
 
                     if (!neighborBlockState.getValue(EnergyUtils.getEnumPropertyFromDirection(originDirection.getOpposite())).isConnected()) {
                         CableShape.addShape(callerCableEntity, originDirection, level, blockPos, callerCableEntity.getBlockState());
-                        CableShape.addShape((CableBaseEntity) neighboringEnergyEntity, originDirection.getOpposite(), level, blockPos.relative(originDirection), neighborBlockState);
-                        /*
-                        Note:
-                        If passed blockState is used in method for main block, main entity blockState doesn't change in some cases
-                        Need to use callerCableEntity.getBlockState() method
-                        Maybe blockState passed here has some kind of immutability?
-                        */
+                        CableShape.addShape((CableBaseEntity) neighboringEntity, originDirection.getOpposite(), level, blockPos.relative(originDirection), neighborBlockState);
                     }
+                    else {
+                        CableShape.addShape(callerCableEntity, originDirection, level, blockPos, callerCableEntity.getBlockState());
+                    }
+                }
+                else if (EnergyUtils.isEnergyEntity(neighboringEntity)) {
+                    CableBaseEntity callerCableEntity = (CableBaseEntity) level.getBlockEntity(blockPos);
+                    CableShape.addShape(callerCableEntity, originDirection, level, blockPos, callerCableEntity.getBlockState());
                 }
             }
         }
+     /*
+    Note:
+    If passed blockState is used in method for main block, main entity blockState doesn't change in some cases
+    Need to use callerCableEntity.getBlockState() method
+    Maybe blockState passed here has some kind of immutability?
+    */
         super.setPlacedBy(level, blockPos, blockState, livingEntity, itemStack);
     }
 

@@ -24,6 +24,9 @@
   "block.quantum_world.basic_electricity_generator": "Basic Electricity Generator",
 
   "block.quantum_world.copper_cable": "Copper Cable",
+  "block.quantum_world.silver_cable": "Silver Cable",
+  "block.quantum_world.fiber_optic_cable": "Fiber Optic Cable",
+  "block.quantum_world.antimatter_cable": "Antimatter Cable",
 
   "comment": "Creative Tabs",
   "itemGroup.tab_quantum_world": "Quantum world"

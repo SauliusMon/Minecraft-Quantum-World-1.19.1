@@ -1,10 +1,8 @@
-package com.saulius.quantum_world.blocks.blocksTile;
+package com.saulius.quantum_world.blocks.blocksTile.cables;
 
-import com.saulius.quantum_world.tools.CableShape;
+import com.saulius.quantum_world.blocks.blocksTile.BlockEntities;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
 
 public class CopperCableEntity extends CableBaseEntity {
 
