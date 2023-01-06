@@ -8,6 +8,10 @@ About the mod itself:
 Main goals:
    Make the mod gameplay enjoyable, bugless and efficient in terms of performance. Current mod iterations are focused on putting more strain on server side, while preserving client side for textures and other visuals loading.
    
+Code logic:
+   Usage of multiple base classes, which are extended by that particular type of block (e.g. CableBaseClass being extended by FiberOpticCableBlock). Static methods in tools directory is used for universal functions, such as finding nearby electric entities or converting enum to direction, without creating an object instance, which in theory should diminish usage of Java garbage collectors and improve mod performance. In later versions, static methods might become a part of the new abstract class BaseEnergy.
+   Textures (.png files) are created using Gimp.
+   
 Main problems:
    Slow electricity flow between cables at a large distances (need to develop a new system or implement path-finding algorithm).
    
