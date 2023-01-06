@@ -1,49 +1,24 @@
-Newest edition - on newest-version branch.
+Newest edition of this mod can be found on newest-version branch.
 
+Hi there,
 
-
-Source installation information for modders
--------------------------------------------
-This code follows the Minecraft Forge installation methodology. It will apply
-some small patches to the vanilla MCP source code, giving you and it access 
-to some of the data and functions you need to build a successful mod.
-
-Note also that the patches are built against "un-renamed" MCP source code (aka
-SRG Names) - this means that you will not be able to read them directly against
-normal code.
-
-Setup Process:
-==============================
-
-Step 1: Open your command-line and browse to the folder where you extracted the zip file.
-
-Step 2: You're left with a choice.
-If you prefer to use Eclipse:
-1. Run the following command: `gradlew genEclipseRuns` (`./gradlew genEclipseRuns` if you are on Mac/Linux)
-2. Open Eclipse, Import > Existing Gradle Project > Select Folder 
-   or run `gradlew eclipse` to generate the project.
-
-If you prefer to use IntelliJ:
-1. Open IDEA, and import project.
-2. Select your build.gradle file and have it import.
-3. Run the following command: `gradlew genIntellijRuns` (`./gradlew genIntellijRuns` if you are on Mac/Linux)
-4. Refresh the Gradle Project in IDEA if required.
-
-If at any point you are missing libraries in your IDE, or you've run into problems you can 
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
-
-Mapping Names:
-=============================
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license, if you do not agree with it you can change your mapping names to other crowdsourced names in your 
-build.gradle. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/MinecraftForge/MCPConfig/blob/master/Mojang.md
-
-Additional Resources: 
-=========================
-Community Documentation: https://mcforge.readthedocs.io/en/latest/gettingstarted/  
-LexManos' Install Video: https://www.youtube.com/watch?v=8VEdtQLuLO0  
-Forge Forum: https://forums.minecraftforge.net/  
-Forge Discord: https://discord.gg/UvedJ9m  
+About the mod itself:
+   This is a tech-based mod focused on electricity and quantum physics. End-game goal would be to make a multi-block particle accelerator, which would be able to produce antimatter by smashing two particles and consuming a massive amount of energy. You would achieve that by collecting a variety of different materials required for crafting, defeating different type of mobs and bosses while traveling to different dimension(s) and building an energy system capable of providing energy to previously mentioned particle accelerator.
+   
+Main goals:
+   Make the mod gameplay enjoyable, bugless and efficient in terms of performance. Current mod iterations are focused on putting more strain on server side, while preserving client side for textures and other visuals loading.
+   
+Main problems:
+   Slow electricity flow between cables at a large distances (need to develop a new system or implement path-finding algorithm).
+   
+Version (state):
+   This mod is still in an EARLY DEVELOPMENT STAGE.
+   Will be used in 1.19.2 Forge version (probably).
+   
+Contacts:
+   If you have any suggestions or (and) found a bug in a code while playing the mod, contact me through github or email: ale.vidmantas@gmail.com
+   
+   
+Special thanks to:
+Kaupenjoe - for awesome youtube tutorials about minecraft modding,
+Forge forums modder support community - for quick and helpful answers regarding modding.
