@@ -1,0 +1,19 @@
+{
+  "textures": {
+    "fiber_optic_cable": "quantum_world:block/cable_side",
+    "fiber_optic_cable_center": "quantum_world:block/fiber_optic_cable"
+  },
+  "elements": [
+    {
+      "from" : [ 6, 6, 0 ],
+      "to" : [ 10, 10, 6 ],
+      "faces" : {
+        "up":    { "uv": [ 0, 16, 4, 10 ], "texture": "#fiber_optic_cable" },
+        "north": { "uv": [ 6, 6, 10, 10 ], "texture": "#fiber_optic_cable_center" },
+        "down":  { "uv": [ 0, 16, 4, 10 ], "texture": "#fiber_optic_cable" },
+        "west":  { "uv": [ 0, 16, 4, 10 ], "texture": "#fiber_optic_cable" },
+        "east":  { "uv": [ 0, 16, 4, 10 ], "texture": "#fiber_optic_cable" }
+      }
+    }
+  ]
+}

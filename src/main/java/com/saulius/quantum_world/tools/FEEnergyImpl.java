@@ -4,12 +4,19 @@ import net.minecraftforge.energy.EnergyStorage;
 
 public abstract class FEEnergyImpl extends EnergyStorage {
 
+    private final int maxReceiving;
+    private final int maxSend;
+
     public FEEnergyImpl(int capacity, int maxTransfer) {
         super(capacity, maxTransfer);
+        this.maxReceiving = maxTransfer;
+        this.maxSend = maxTransfer;
     }
 
-    public FEEnergyImpl(int capacity, int maxRecieve, int maxExtract) {
-        super(capacity, maxRecieve, maxExtract);
+    public FEEnergyImpl(int capacity, int maxReceive, int maxExtract) {
+        super(capacity, maxReceive, maxExtract);
+        this.maxReceiving = maxReceive;
+        this.maxSend = maxExtract;
     }
 
     @Override
@@ -45,6 +52,10 @@ public abstract class FEEnergyImpl extends EnergyStorage {
     public void setEnergy (int energy) {
         this.energy = energy;
     }
+
+    public int getMaxReceiving() { return maxReceiving; }
+
+    public int getMaxSend () { return maxSend; }
 
     public abstract void onEnergyChange();
 }

@@ -1,10 +1,12 @@
 package com.saulius.quantum_world.blocks;
 
 import com.saulius.quantum_world.QuantumWorld;
-import com.saulius.quantum_world.blocks.advancedBlocks.BasicElectricityGeneratorBlock;
-import com.saulius.quantum_world.blocks.advancedBlocks.BasicElectricityHolderBlock;
+import com.saulius.quantum_world.blocks.advancedBlocks.*;
+import com.saulius.quantum_world.blocks.advancedBlocks.cables.AntimatterCable;
+import com.saulius.quantum_world.blocks.advancedBlocks.cables.CopperCableBlock;
+import com.saulius.quantum_world.blocks.advancedBlocks.cables.FiberOpticCable;
+import com.saulius.quantum_world.blocks.advancedBlocks.cables.SilverCableBlock;
 import com.saulius.quantum_world.blocks.blocksGeneration.BlockPropertiesGeneration;
-import com.saulius.quantum_world.blocks.blocksTile.BasicElectricityGeneratorEntity;
 import com.saulius.quantum_world.items.itemsRegistry.ItemsRegistry;
 import com.saulius.quantum_world.items.itemsRegistry.ModCreativeModeTabs;
 import net.minecraft.world.item.BlockItem;
@@ -38,6 +40,17 @@ public class BlocksRegistry {
     public static final RegistryObject<Block> BASIC_ELECTRICITY_GENERATOR = registerBlock("basic_electricity_generator",
             () -> new BasicElectricityGeneratorBlock(BlockBehaviour.Properties.of(Material.METAL)), ModCreativeModeTabs.TAB_QUANTUM_WORLD);
 
+    public static final RegistryObject<Block> COPPER_CABLE = registerBlock("copper_cable",
+            () -> new CopperCableBlock(BlockBehaviour.Properties.of(Material.WOOL)), ModCreativeModeTabs.TAB_QUANTUM_WORLD);
+
+    public static final RegistryObject<Block> SILVER_CABLE = registerBlock("silver_cable",
+            () -> new SilverCableBlock(BlockBehaviour.Properties.of(Material.WOOL)), ModCreativeModeTabs.TAB_QUANTUM_WORLD);
+
+    public static final RegistryObject<Block> FIBER_OPTIC_CABLE = registerBlock("fiber_optic_cable",
+            () -> new FiberOpticCable(BlockBehaviour.Properties.of(Material.GLASS)), ModCreativeModeTabs.TAB_QUANTUM_WORLD);
+
+    public static final RegistryObject<Block> ANTIMATTER_CABLE = registerBlock("antimatter_cable",
+            () -> new AntimatterCable(BlockBehaviour.Properties.of(Material.GLASS)), ModCreativeModeTabs.TAB_QUANTUM_WORLD);
 
 
     private static <T extends Block> RegistryObject<T> registerBlock (String name, Supplier<T> block, CreativeModeTab tab) {

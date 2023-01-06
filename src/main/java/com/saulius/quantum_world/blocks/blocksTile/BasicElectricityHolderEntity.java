@@ -1,8 +1,7 @@
 package com.saulius.quantum_world.blocks.blocksTile;
 
 import com.saulius.quantum_world.blocks.blocksGui.BasicElectricityHolderGUI.BasicElectricityHolderMenu;
-import com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking.AbstractModEnergy;
-import com.saulius.quantum_world.items.itemsRegistry.ItemsRegistry;
+import com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking.AbstractModEnergyAndEntity;
 import com.saulius.quantum_world.tools.FEEnergyImpl;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,24 +18,12 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BasicElectricityHolderEntity extends BlockEntity implements MenuProvider, AbstractModEnergy {
+public class BasicElectricityHolderEntity extends BlockEntity implements MenuProvider, AbstractModEnergyAndEntity {
 
-    private final ItemStackHandler itemStackHandler = new ItemStackHandler(1) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            setChanged();
-        }
-    };
-
-    private LazyOptional<IItemHandler> lazyOptItemHandler = LazyOptional.empty();
     //protected final ContainerData data;
-
     public BasicElectricityHolderEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockEntities.BASIC_ELECTRICITY_HOLDER_ENTITY.get(), blockPos, blockState);
 
@@ -64,27 +51,23 @@ public class BasicElectricityHolderEntity extends BlockEntity implements MenuPro
     @Override
     public void onLoad() {
         super.onLoad();
-        lazyOptItemHandler = LazyOptional.of(() -> itemStackHandler);
         lazyOptEnergyHandler = LazyOptional.of(() -> blockEnergy);
     }
 
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
-        lazyOptItemHandler.invalidate();
         lazyOptEnergyHandler.invalidate();
     }
 
     @Override
     public void load(CompoundTag compoundTag) {
         super.load(compoundTag);
-        itemStackHandler.deserializeNBT(compoundTag.getCompound("inventory"));
         blockEnergy.setEnergy(compoundTag.getInt("current_energy_amount"));
     }
 
     @Override
     protected void saveAdditional(CompoundTag compoundTag) {
-        compoundTag.put("inventory", itemStackHandler.serializeNBT());
         compoundTag.putInt("current_energy_amount", blockEnergy.getEnergyStored());
         super.saveAdditional(compoundTag);
     }
@@ -93,10 +76,6 @@ public class BasicElectricityHolderEntity extends BlockEntity implements MenuPro
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction direction) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return lazyOptItemHandler.cast();
-        }
-
         if (cap == CapabilityEnergy.ENERGY) {
             return lazyOptEnergyHandler.cast();
         }
@@ -112,15 +91,11 @@ public class BasicElectricityHolderEntity extends BlockEntity implements MenuPro
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, BasicElectricityHolderEntity entity) {
        if (!level.isClientSide) {
-           if (entity.itemStackHandler.getStackInSlot(0).getItem() == ItemsRegistry.ENERGIUM_INGOT.get()) {
-               entity.blockEnergy.receiveEnergy(100, false);
 
-//               entity.itemStackHandler.setStackInSlot(0, new ItemStack(ItemsRegistry.COSMIC_INGOT.get()));
-           }
        }
     }
 
-    public IEnergyStorage getEnergyStorage() {
+    public FEEnergyImpl getEnergyStorage() {
         return blockEnergy;
     }
 
@@ -129,4 +104,6 @@ public class BasicElectricityHolderEntity extends BlockEntity implements MenuPro
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
         return new BasicElectricityHolderMenu(id, inventory, this); //, this.data
     }
+
+    public BlockEntity getEntity() { return level.getBlockEntity(getBlockPos()); }
 }

@@ -1,11 +1,8 @@
 package com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking;
 
-import net.minecraftforge.energy.IEnergyStorage;
+import com.saulius.quantum_world.tools.FEEnergyImpl;
+import com.saulius.quantum_world.tools.ProgressScaleObject;
 
-public interface AbstractModEnergyAndTick {
-
-    public IEnergyStorage getEnergyStorage();
-    public int getScale();
-
-    public void setScale(int scale);
+public interface AbstractModEnergyAndTick extends AbstractModEnergy {
+    ProgressScaleObject getProgressScale();
 }

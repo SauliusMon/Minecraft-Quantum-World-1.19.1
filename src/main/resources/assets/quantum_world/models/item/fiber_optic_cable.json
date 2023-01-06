@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "quantum_world:item/fiber_optic_cable_item"
+  }
+}

@@ -38,8 +38,8 @@ public class ClientEnergyAndScaleSync {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
             AbstractModEnergyAndTick blockEntity = (AbstractModEnergyAndTick) Minecraft.getInstance().level.getBlockEntity(blockPos);
-            ((FEEnergyImpl) blockEntity.getEnergyStorage()).setEnergy(currentEnergyStored);
-            blockEntity.setScale(scale);
+            blockEntity.getEnergyStorage().setEnergy(currentEnergyStored);
+            blockEntity.getProgressScale().setScale(scale);
         });
         return true;
     }

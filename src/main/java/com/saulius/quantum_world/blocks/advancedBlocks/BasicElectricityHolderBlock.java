@@ -25,7 +25,8 @@ import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class BasicElectricityHolderBlock extends BaseEntityBlock {
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+
+    public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
     public BasicElectricityHolderBlock(Properties properties) {
         super(properties);

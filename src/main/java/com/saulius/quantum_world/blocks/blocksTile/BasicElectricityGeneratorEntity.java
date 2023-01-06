@@ -1,9 +1,13 @@
 package com.saulius.quantum_world.blocks.blocksTile;
 
 import com.saulius.quantum_world.blocks.blocksGui.BasicElectricityGeneratorGUI.BasicElectricityGeneratorMenu;
+import com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking.AbstractModEnergy;
 import com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking.AbstractModEnergyAndTick;
+import com.saulius.quantum_world.blocks.blocksTile.abstarctsForNetworking.AbstractModEnergyAndEntity;
 import com.saulius.quantum_world.items.itemsRegistry.ItemsRegistry;
+import com.saulius.quantum_world.tools.EnergyUtils;
 import com.saulius.quantum_world.tools.FEEnergyImpl;
+import com.saulius.quantum_world.tools.ProgressScaleObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +29,9 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BasicElectricityGeneratorEntity extends BlockEntity implements MenuProvider, AbstractModEnergyAndTick {
+import static com.saulius.quantum_world.blocks.advancedBlocks.BasicElectricityGeneratorBlock.FACING;
+
+public class BasicElectricityGeneratorEntity extends BlockEntity implements MenuProvider, AbstractModEnergyAndTick, AbstractModEnergyAndEntity {
 
     private final ItemStackHandler itemStackHandler = new ItemStackHandler(1) {
         @Override
@@ -33,7 +39,8 @@ public class BasicElectricityGeneratorEntity extends BlockEntity implements Menu
             setChanged();
         }
     };
-
+    private LazyOptional<IEnergyStorage> lazyOptEnergyHandler = LazyOptional.empty();
+    private LazyOptional<ProgressScaleObject> lazyOptBurnScale = LazyOptional.empty();
     private LazyOptional<IItemHandler> lazyOptItemHandler = LazyOptional.empty();
 
     public BasicElectricityGeneratorEntity(BlockPos blockPos, BlockState blockState) {
@@ -50,6 +57,7 @@ public class BasicElectricityGeneratorEntity extends BlockEntity implements Menu
         super.onLoad();
         lazyOptItemHandler = LazyOptional.of(() -> itemStackHandler);
         lazyOptEnergyHandler = LazyOptional.of(() -> blockEnergy);
+        lazyOptBurnScale = LazyOptional.of(() -> blockProgress);
     }
 
     @Override
@@ -57,6 +65,7 @@ public class BasicElectricityGeneratorEntity extends BlockEntity implements Menu
         super.invalidateCaps();
         lazyOptItemHandler.invalidate();
         lazyOptEnergyHandler.invalidate();
+        lazyOptBurnScale.invalidate();
     }
 
     @Override
@@ -64,63 +73,82 @@ public class BasicElectricityGeneratorEntity extends BlockEntity implements Menu
         super.load(compoundTag);
         itemStackHandler.deserializeNBT(compoundTag.getCompound("inventory"));
         blockEnergy.setEnergy(compoundTag.getInt("current_energy_amount"));
+        blockProgress.setScale(compoundTag.getInt("current_scale_amount"));
     }
 
     @Override
     protected void saveAdditional(CompoundTag compoundTag) {
         compoundTag.put("inventory", itemStackHandler.serializeNBT());
         compoundTag.putInt("current_energy_amount", blockEnergy.getEnergyStored());
+        compoundTag.putInt("current_scale_amount", blockProgress.getScale());
         super.saveAdditional(compoundTag);
     }
 
-    private LazyOptional<IEnergyStorage> lazyOptEnergyHandler = LazyOptional.empty();
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction direction) {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return lazyOptItemHandler.cast();
         }
-
         if (cap == CapabilityEnergy.ENERGY) {
             return lazyOptEnergyHandler.cast();
         }
         return super.getCapability(cap, direction);
     }
 
-    private final FEEnergyImpl blockEnergy = new FEEnergyImpl(10000, 20) {
+    private final FEEnergyImpl blockEnergy = new FEEnergyImpl(10000, MAX_ENERGY_SENT_PER_TICK) {
         @Override
         public void onEnergyChange() {
             setChanged();
         }
     };
-    private int scale = 0;
+
+    private static final int ENERGY_PER_TICK_FROM_ENERGIUM_INGOT = 10;
+    private static final int MAX_ENERGY_SENT_PER_TICK = 20;
+    private final ProgressScaleObject blockProgress = new ProgressScaleObject(100);
+
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, BasicElectricityGeneratorEntity entity) {
         if (!level.isClientSide) {
-            if (entity.getScale() != 0) {
-                if (entity.getEnergyStorage().canReceive()) {
-                    entity.blockEnergy.receiveEnergy(5, false);
-                    entity.reduceScale();
-//                      entity.itemStackHandler.setStackInSlot(0, new ItemStack(ItemsRegistry.COSMIC_INGOT.get()));
+            if (entity.getEnergyStorage().getEnergyStored() > 0) {
+                if (EnergyUtils.canSendToNeighbor(level.getBlockEntity(blockPos.relative(blockState.getValue(FACING).getOpposite())),
+                        blockState.getValue(FACING))) {
+                    AbstractModEnergy neighboringBlockEntity = (AbstractModEnergy) level.getBlockEntity(
+                            blockPos.relative(blockState.getValue(FACING).getOpposite()));
+                    if (entity.getEnergyStorage().getEnergyStored() >= MAX_ENERGY_SENT_PER_TICK) {
+                        entity.getEnergyStorage().extractEnergy(neighboringBlockEntity.getEnergyStorage().receiveEnergy(
+                                MAX_ENERGY_SENT_PER_TICK, false), false);
+                    }
+                    else {
+                        entity.getEnergyStorage().extractEnergy(neighboringBlockEntity.getEnergyStorage().receiveEnergy(
+                                entity.getEnergyStorage().getEnergyStored(), false), false);
+                    }
+                }
+            }
+            //Generating energy:
+            if (entity.blockProgress.getScale() != 0) {
+                if (entity.blockEnergy.canReceive()) {
+                    entity.blockEnergy.receiveEnergy(ENERGY_PER_TICK_FROM_ENERGIUM_INGOT, false);
+                    entity.blockProgress.reduceScale();
                 }
             } else {
                 if (entity.itemStackHandler.getStackInSlot(0).getItem() == ItemsRegistry.ENERGIUM_INGOT.get()) {
-                    entity.setScale(100);
+                    entity.blockProgress.resetScale();
                     entity.itemStackHandler.extractItem(0, 1, false);
                 }
             }
         }
     }
 
-    public IEnergyStorage getEnergyStorage() {
+    public FEEnergyImpl getEnergyStorage() {
         return blockEnergy;
     }
 
-    @Override
-    public int getScale() { return scale;}
-    public void setScale(int scale) { this.scale = scale;}
+    public ProgressScaleObject getProgressScale() {
+        return blockProgress;
+    }
 
-    public void reduceScale() { this.scale--;}
+    public BlockEntity getEntity() { return level.getBlockEntity(getBlockPos()); }
 
     @Nullable
     @Override

@@ -1,0 +1,105 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "quantum_world:block/antimatter_cable/antimatter_cable_base"
+      }
+    },
+    {
+      "when": {
+        "conn_up": "connected"
+      },
+      "apply": {
+        "model": "quantum_world:block/antimatter_cable/antimatter_cable_up"
+      }
+    },
+    {
+      "when": {
+        "conn_up": "not_connected"
+      },
+      "apply": {
+        "model": "quantum_world:block/antimatter_cable/antimatter_cable_base"
+      }
+    },
+    {
+      "when": {
+        "conn_down": "connected"
+      },
+      "apply": {
+        "model": "quantum_world:block/antimatter_cable/antimatter_cable_down"
+      }
+    },
+    {
+      "when": {
+        "conn_down": "not_connected"
+      },
+      "apply": {
+        "model": "quantum_world:block/antimatter_cable/antimatter_cable_base"
+      }
+    },
+    {
+      "when": {
+        "conn_north": "connected"
+      },
+      "apply": {
+        "model": "quantum_world:block/antimatter_cable/antimatter_cable_north"
+      }
+    },
+    {
+      "when": {
+        "conn_north": "not_connected"
+      },
+      "apply": {
+        "model": "quantum_world:block/antimatter_cable/antimatter_cable_base"
+      }
+    },
+    {
+      "when": {
+        "conn_south": "connected"
+      },
+      "apply": {
+        "model": "quantum_world:block/antimatter_cable/antimatter_cable_south"
+      }
+    },
+    {
+      "when": {
+        "conn_south": "not_connected"
+      },
+      "apply": {
+        "model": "quantum_world:block/antimatter_cable/antimatter_cable_base"
+      }
+    },
+    {
+      "when": {
+        "conn_east": "connected"
+      },
+      "apply": {
+        "model": "quantum_world:block/antimatter_cable/antimatter_cable_east"
+      }
+    },
+    {
+      "when": {
+        "conn_east": "not_connected"
+      },
+      "apply": {
+        "model": "quantum_world:block/antimatter_cable/antimatter_cable_base"
+      }
+    },
+    {
+      "when": {
+        "conn_west": "connected"
+      },
+      "apply": {
+        "model": "quantum_world:block/antimatter_cable/antimatter_cable_west"
+      }
+    },
+    {
+      "when": {
+        "conn_west": "not_connected"
+      },
+      "apply": {
+        "model": "quantum_world:block/antimatter_cable/antimatter_cable_base"
+      }
+    }
+  ]
+}

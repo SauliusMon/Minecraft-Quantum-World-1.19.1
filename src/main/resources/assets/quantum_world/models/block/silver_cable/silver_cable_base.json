@@ -1,0 +1,19 @@
+{
+  "textures": {
+    "silver_cable": "quantum_world:block/silver_cable"
+  },
+  "elements": [
+    {
+      "from" : [ 6, 6, 6 ],
+      "to" : [ 10, 10, 10 ],
+      "faces" : {
+        "up":    { "uv": [ 6, 6, 10, 10 ], "texture": "#silver_cable" },
+        "down":  { "uv": [ 6, 6, 10, 10 ], "texture": "#silver_cable" },
+        "north": { "uv": [ 6, 6, 10, 10 ], "texture": "#silver_cable" },
+        "south": { "uv": [ 6, 6, 10, 10 ], "texture": "#silver_cable" },
+        "west":  { "uv": [ 6, 6, 10, 10 ], "texture": "#silver_cable" },
+        "east":  { "uv": [ 6, 6, 10, 10 ], "texture": "#silver_cable" }
+      }
+    }
+  ]
+}

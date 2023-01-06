@@ -10,8 +10,6 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
 
 public class BasicElectricityHolderMenu extends AbstractContainerMenu {
 
@@ -32,17 +30,8 @@ public class BasicElectricityHolderMenu extends AbstractContainerMenu {
         addPlayerHotbar(inventory);
         addPlayerInventory(inventory);
 
-        this.blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler ->
-                this.addSlot(new SlotItemHandler(iItemHandler, 0, 20, 20)));
         //addDataSlots(containerData);
     }
-
-    // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons
-    private static final int PLAYER_INVENTORY_SLOT_COUNT = 9 * 3;
-    private static final int VANILLA_SLOT_COUNT = 9 + PLAYER_INVENTORY_SLOT_COUNT;
-    private static final int VANILLA_FIRST_SLOT_INDEX = 0;
-    private static final int TE_INVENTORY_FIRST_SLOT_INDEX = 36;
-    private static final int TE_INVENTORY_SLOT_COUNT = 1;
 
     @Override
     public ItemStack quickMoveStack(Player playerIn, int index) {
@@ -52,13 +41,13 @@ public class BasicElectricityHolderMenu extends AbstractContainerMenu {
         ItemStack copyOfSourceStack = sourceStack.copy();
 
         // Loop starts if moveItemStackTo doesn't go off
-        if (index < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
-            if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, TE_INVENTORY_FIRST_SLOT_INDEX
-                    + TE_INVENTORY_SLOT_COUNT, false)) {
+        if (index < 9) {
+            if (!moveItemStackTo(sourceStack, 9, 9
+                    + 27, false)) {
                 return ItemStack.EMPTY;
             }
-        } else if (index < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
-            if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX,VANILLA_FIRST_SLOT_INDEX +  VANILLA_SLOT_COUNT, false)) {
+        } else if (index < 36) {
+            if (!moveItemStackTo(sourceStack, 0, 9, false)) {
                 return ItemStack.EMPTY;
             }
         } else {
