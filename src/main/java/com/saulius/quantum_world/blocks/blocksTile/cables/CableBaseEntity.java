@@ -42,7 +42,7 @@ public abstract class CableBaseEntity extends BlockEntity implements AbstractMod
         super(blockEntityType, blockPos, blockState);
         setShape(Block.box(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D));
         setShape(cableShapeObject.onLoadCableShape(currentCableShape, getBlockState()));
-        blockEnergy = new FEEnergyImpl(energyInCable, energyToSend) {
+        blockEnergy = new FEEnergyImpl(energyInCable, maxRecieve, energyToSend) {
             @Override
             public void onEnergyChange() {
                 setChanged();

@@ -102,7 +102,7 @@ public class BasicElectricityHolderEntity extends BlockEntity implements MenuPro
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new BasicElectricityHolderMenu(id, inventory, this); //, this.data
+        return new BasicElectricityHolderMenu(id, inventory, this);
     }
 
     public BlockEntity getEntity() { return level.getBlockEntity(getBlockPos()); }
