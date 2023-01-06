@@ -19,7 +19,7 @@ Contacts:
    If you have any suggestions or (and) found a bug in a code while playing the mod, contact me through github or email: ale.vidmantas@gmail.com
    
 Creators:
-  Currently, all textures and code was written by me.
+  Currently, all textures and code was written, created by me.
    
    
 Special thanks to:
