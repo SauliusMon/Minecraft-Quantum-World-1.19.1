@@ -106,7 +106,7 @@ public class EnergyUtils {
                 }
             }
         }
-        /* This is used to set which blockEntities have priority for energy - for example, block which holds electricity has a functionality of holding it,
+        /* This is used to set which blockEntities has priority for energy - for example, block which holds electricity has a functionality of holding it,
            while cables functionality is to transport it between blocks.
            It also sorts cables by energy amount - if cable has more energy, it has higher possibility to be near a block which generates electricity.
            Further implementations might have path finding algorithm through BlockStates conditions.
