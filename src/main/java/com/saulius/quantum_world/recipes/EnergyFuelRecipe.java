@@ -13,16 +13,14 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-import static com.ibm.icu.impl.ValidIdentifiers.Datatype.x;
-
-public class BasicElectricityGeneratorRecipe implements Recipe<SimpleContainer> {
+public class EnergyFuelRecipe implements Recipe<SimpleContainer> {
 
     private final ResourceLocation ID;
     private final ItemStack OUTPUT;
     private final NonNullList<Ingredient> RECIPE_ITEMS;
 
-    public BasicElectricityGeneratorRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> recipeItems) {
-        ID = id;
+    public EnergyFuelRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> recipeItems) {
+        this.ID = id;
         this.OUTPUT = output;
         this.RECIPE_ITEMS = recipeItems;
     }
@@ -32,6 +30,11 @@ public class BasicElectricityGeneratorRecipe implements Recipe<SimpleContainer> 
         if (level.isClientSide)
             return false;
         return RECIPE_ITEMS.get(0).test(simpleContainer.getItem(1));
+    }
+
+    @Override
+    public NonNullList<Ingredient> getIngredients() {
+        return RECIPE_ITEMS;
     }
 
     @Override
@@ -64,18 +67,18 @@ public class BasicElectricityGeneratorRecipe implements Recipe<SimpleContainer> 
         return Type.INSTANCE;
     }
 
-    public static class Type implements RecipeType<BasicElectricityGeneratorRecipe> {
+    public static class Type implements RecipeType<EnergyFuelRecipe> {
         private Type() { }
         public static final Type INSTANCE = new Type();
-        public static final String ID = "electricity_generator";
+        public static final String ID = "energy_fuel";
     }
 
-    public static class Serializer implements RecipeSerializer<BasicElectricityGeneratorRecipe> {
+    public static class Serializer implements RecipeSerializer<EnergyFuelRecipe> {
         public static final Serializer INSTANCE = new Serializer();
-        public static final ResourceLocation ID = new ResourceLocation(QuantumWorld.MODID, "electricity_generator");
+        public static final ResourceLocation ID = new ResourceLocation(QuantumWorld.MODID, "energy_fuel");
 
         @Override
-        public BasicElectricityGeneratorRecipe fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
+        public EnergyFuelRecipe fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(jsonObject, "output"));
             JsonArray ingredients = GsonHelper.getAsJsonArray(jsonObject, "ingredients");
             NonNullList<Ingredient> inputs = NonNullList.withSize(1, Ingredient.EMPTY);
@@ -83,28 +86,28 @@ public class BasicElectricityGeneratorRecipe implements Recipe<SimpleContainer> 
             for (int x = 0; x < inputs.size(); x++) {
                 inputs.set(x, Ingredient.fromJson(ingredients.get(x)));
             }
-            return new BasicElectricityGeneratorRecipe(resourceLocation, output, inputs);
+            return new EnergyFuelRecipe(resourceLocation, output, inputs);
         }
 
         @Override
-        public @Nullable BasicElectricityGeneratorRecipe fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf friendlyByteBuf) {
+        public @Nullable EnergyFuelRecipe fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf friendlyByteBuf) {
             NonNullList<Ingredient> inputs = NonNullList.withSize(friendlyByteBuf.readInt(), Ingredient.EMPTY);
 
             for (int x = 0; x < inputs.size(); x++) {
                 inputs.set(x, Ingredient.fromNetwork(friendlyByteBuf));
             }
             ItemStack output = friendlyByteBuf.readItem();
-            return new BasicElectricityGeneratorRecipe(resourceLocation, output, inputs);
+            return new EnergyFuelRecipe(resourceLocation, output, inputs);
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf friendlyByteBuf, BasicElectricityGeneratorRecipe basicElectricityGeneratorRecipe) {
-            friendlyByteBuf.writeInt(basicElectricityGeneratorRecipe.getIngredients().size());
+        public void toNetwork(FriendlyByteBuf friendlyByteBuf, EnergyFuelRecipe energyFuelRecipe) {
+            friendlyByteBuf.writeInt(energyFuelRecipe.getIngredients().size());
 
-            for(Ingredient ingredient : basicElectricityGeneratorRecipe.getIngredients()) {
+            for(Ingredient ingredient : energyFuelRecipe.getIngredients()) {
                 ingredient.toNetwork(friendlyByteBuf);
             }
-            friendlyByteBuf.writeItemStack(basicElectricityGeneratorRecipe.getResultItem(), false);
+            friendlyByteBuf.writeItemStack(energyFuelRecipe.getResultItem(), false);
         }
     }
 }

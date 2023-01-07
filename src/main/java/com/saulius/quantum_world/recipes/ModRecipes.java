@@ -12,8 +12,8 @@ public class ModRecipes {
     public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(
             ForgeRegistries.RECIPE_SERIALIZERS, QuantumWorld.MODID);
 
-    public static final RegistryObject<RecipeSerializer<BasicElectricityGeneratorRecipe>> BASIC_ELECTRICITY_GENERATOR_SERIALIZER =
-            SERIALIZERS.register("basic_electricity_generator", () -> BasicElectricityGeneratorRecipe.Serializer.INSTANCE);
+    public static final RegistryObject<RecipeSerializer<EnergyFuelRecipe>> ENERGY_FUEL_SERIALIZER =
+            SERIALIZERS.register("energy_fuel", () -> EnergyFuelRecipe.Serializer.INSTANCE);
 
     public static void register (IEventBus iEventBus) {
         SERIALIZERS.register(iEventBus);

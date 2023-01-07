@@ -1,0 +1,11 @@
+{
+  "type": "quantum_world:energy_fuel",
+  "ingredients": [
+    {
+      "item": "quantum_world:energium_ingot"
+    }
+  ],
+  "output": {
+    "item": "minecraft:diamond"
+  }
+}
