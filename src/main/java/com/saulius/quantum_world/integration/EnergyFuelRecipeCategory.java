@@ -5,6 +5,7 @@ import com.saulius.quantum_world.QuantumWorld;
 import com.saulius.quantum_world.recipes.EnergyFuelRecipe;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -18,17 +19,22 @@ import net.minecraft.resources.ResourceLocation;
 public class EnergyFuelRecipeCategory implements IRecipeCategory<EnergyFuelRecipe> {
    public static final ResourceLocation UID = new ResourceLocation(QuantumWorld.MODID, "energy_fuel");
    public static final ResourceLocation TEXTURE_BLOCK = new ResourceLocation(QuantumWorld.MODID, "textures/gui/energy_generation_gui.png");
-    public static final ResourceLocation TEXTURE_ICON = new ResourceLocation(QuantumWorld.MODID, "textures/gui/energy_flame_gui1.png");
+    public static final ResourceLocation TEXTURE_ICON = new ResourceLocation(QuantumWorld.MODID, "textures/gui/energy_flame_gui.png");
 
-
+    public static final ResourceLocation TEXTURE_ICON_NO_SHADOW = new ResourceLocation
+            (QuantumWorld.MODID, "textures/gui/energy_flame_no_shadow_gui.png");
     private final IDrawable background;
    private final IDrawable icon;
+
+    private final IDrawableAnimated energyBurningAnimation;
 
     public EnergyFuelRecipeCategory(IGuiHelper guiHelper) {
         //this.background = guiHelper.createDrawable(TEXTURE_BLOCK, 0, 0, 176, 85);
         //this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(BlocksRegistry.BASIC_ELECTRICITY_GENERATOR.get()));
         this.background = guiHelper.drawableBuilder(TEXTURE_BLOCK, 0, 0, 176, 50).setTextureSize(176, 50).build();
         this.icon = guiHelper.drawableBuilder(TEXTURE_ICON, 0, 0, 14, 14).setTextureSize(14, 14).build();
+        this.energyBurningAnimation = guiHelper.drawableBuilder(TEXTURE_ICON_NO_SHADOW, 0, 0, 13, 13).setTextureSize(13, 13)
+                .buildAnimated(100, IDrawableAnimated.StartDirection.BOTTOM, false);
     }
 
     @Override
@@ -55,6 +61,8 @@ public class EnergyFuelRecipeCategory implements IRecipeCategory<EnergyFuelRecip
     public void draw(EnergyFuelRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
         IRecipeCategory.super.draw(recipe, recipeSlotsView, stack, mouseX, mouseY);
         Minecraft.getInstance().font.draw(stack, "Drawing stuff", 75, 21, 0);
+
+        energyBurningAnimation.draw(stack, 41, 18);
     }
 
     @Override
