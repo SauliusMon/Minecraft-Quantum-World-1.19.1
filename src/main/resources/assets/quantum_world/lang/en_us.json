@@ -6,6 +6,9 @@
   "block.quantum_world.cosmic_ore": "Cosmic Ore",
   "block.quantum_world.cosmic_block": "Cosmic Block",
 
+  "block.quantum_world.energium_block": "Energium Block",
+  "block.quantum_world.energium_ore": "Energium Ore",
+
   "item.quantum_world.cosmic_axe": "Cosmic Axe",
   "item.quantum_world.cosmic_hoe": "Cosmic Hoe",
   "item.quantum_world.cosmic_pickaxe": "Cosmic Pickaxe",

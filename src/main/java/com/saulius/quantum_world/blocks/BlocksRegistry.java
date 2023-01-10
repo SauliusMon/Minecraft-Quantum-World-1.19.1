@@ -26,14 +26,17 @@ public class BlocksRegistry {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, QuantumWorld.MODID);
 
-    @SuppressWarnings("unused")
     private static final RegistryObject<Block> COSMIC_ORE = registerBlock("cosmic_ore",
             () -> new Block(BlockPropertiesGeneration.cosmicProperties), ModCreativeModeTabs.TAB_QUANTUM_WORLD);
 
-    @SuppressWarnings("unused")
     private static final RegistryObject<Block> COSMIC_BLOCK = registerBlock("cosmic_block",
             () -> new Block(BlockPropertiesGeneration.cosmicProperties), ModCreativeModeTabs.TAB_QUANTUM_WORLD);
 
+    private static final RegistryObject<Block> ENERGIUM_ORE = registerBlock("energium_ore",
+            () -> new Block(BlockPropertiesGeneration.energiumProperties), ModCreativeModeTabs.TAB_QUANTUM_WORLD);
+
+    private static final RegistryObject<Block> ENERGIUM_BLOCK = registerBlock("energium_block",
+            () -> new Block(BlockPropertiesGeneration.energiumProperties), ModCreativeModeTabs.TAB_QUANTUM_WORLD);
     public static final RegistryObject<Block> BASIC_ELECTRICITY_HOLDER = registerBlock("basic_electricity_holder",
             () -> new BasicElectricityHolderBlock(BlockBehaviour.Properties.of(Material.METAL)), ModCreativeModeTabs.TAB_QUANTUM_WORLD);
 

@@ -5,7 +5,6 @@
       "item": "quantum_world:energium_ingot"
     }
   ],
-  "output": {
-    "item": "minecraft:diamond"
-  }
+  "energy": 1000,
+  "burn_time": 100
 }
