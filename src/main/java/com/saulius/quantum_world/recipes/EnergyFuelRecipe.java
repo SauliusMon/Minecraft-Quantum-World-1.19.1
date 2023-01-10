@@ -49,7 +49,7 @@ public class EnergyFuelRecipe implements Recipe<SimpleContainer> {
         return true;
     }
 
-    @Override
+    @Override //WARNING in logger - probably result of EMPTY ItemStack
     public ItemStack getResultItem() {
         return ItemStack.EMPTY; //OUTPUT.copy()
     }
