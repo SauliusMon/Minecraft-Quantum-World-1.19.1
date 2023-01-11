@@ -9,6 +9,8 @@ import com.saulius.quantum_world.blocks.blocksTile.BlockEntities;
 import com.saulius.quantum_world.items.itemsRegistry.ItemsRegistry;
 import com.saulius.quantum_world.networking.ModPackets;
 import com.saulius.quantum_world.recipes.ModRecipes;
+import com.saulius.quantum_world.world.feature.ModConfiguredFeatures;
+import com.saulius.quantum_world.world.feature.ModPlacedFeatures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.Item;
@@ -61,6 +63,9 @@ public class QuantumWorld
 
         BlockEntities.register(modEventBus);
         ModMenus.register(modEventBus);
+
+        ModConfiguredFeatures.register(modEventBus);
+        ModPlacedFeatures.register(modEventBus);
 
         ModRecipes.register(modEventBus);
 

@@ -3,11 +3,14 @@
   "item.quantum_world.cosmic_ingot" : "Cosmic Ingot",
   "item.quantum_world.energium_ingot": "Energium Ingot",
 
-  "block.quantum_world.cosmic_ore": "Cosmic Ore",
   "block.quantum_world.cosmic_block": "Cosmic Block",
+  "block.quantum_world.cosmic_ore": "Cosmic Ore",
+  "block.quantum_world.deepslate_cosmic_ore": "Deepslate Cosmic Ore",
+
 
   "block.quantum_world.energium_block": "Energium Block",
   "block.quantum_world.energium_ore": "Energium Ore",
+  "block.quantum_world.deepslate_energium_ore": "Deepslate Energium Ore",
 
   "item.quantum_world.cosmic_axe": "Cosmic Axe",
   "item.quantum_world.cosmic_hoe": "Cosmic Hoe",
