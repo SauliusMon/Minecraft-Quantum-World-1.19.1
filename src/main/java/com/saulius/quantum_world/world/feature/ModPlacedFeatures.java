@@ -21,8 +21,9 @@ public class ModPlacedFeatures {
 
     public static final RegistryObject<PlacedFeature> COSMIC_ORE_PLACED = PLACED_FEATURES.register("cosmic_ore_placed",
             () -> new PlacedFeature(ModConfiguredFeatures.COSMIC_ORE.getHolder().get(),
-                    commonOrePlacement(3,
+                    commonOrePlacement(4,
                             HeightRangePlacement.triangle(VerticalAnchor.absolute(-60), VerticalAnchor.absolute(0)))));
+    //A bit too rare, might need to change it later
 
 
     private static List<PlacementModifier> orePlacement(PlacementModifier placementModifier, PlacementModifier placementModifier1) {

@@ -29,10 +29,10 @@ public class ModConfiguredFeatures {
             OreConfiguration.target(OreFeatures.DEEPSLATE_ORE_REPLACEABLES, BlocksRegistry.DEEPSLATE_COSMIC_ORE.get().defaultBlockState())));
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> ENERGIUM_ORE = CONFIGURED_FEATURES.register("energium_ore",
-            () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(ENERGIUM_ORES.get(), 5)));
+            () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(ENERGIUM_ORES.get(), 10)));
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> COSMIC_ORE = CONFIGURED_FEATURES.register("cosmic_ore",
-            () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(COSMIC_ORES.get(), 3)));
+            () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(COSMIC_ORES.get(), 5)));
 
     public static void register (IEventBus iEventBus) {
         CONFIGURED_FEATURES.register(iEventBus);
