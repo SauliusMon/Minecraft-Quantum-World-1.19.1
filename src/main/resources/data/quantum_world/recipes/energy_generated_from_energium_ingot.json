@@ -1,0 +1,10 @@
+{
+  "type": "quantum_world:energy_fuel",
+  "ingredients": [
+    {
+      "item": "quantum_world:energium_ingot"
+    }
+  ],
+  "energy": 1000,
+  "burn_time": 100
+}

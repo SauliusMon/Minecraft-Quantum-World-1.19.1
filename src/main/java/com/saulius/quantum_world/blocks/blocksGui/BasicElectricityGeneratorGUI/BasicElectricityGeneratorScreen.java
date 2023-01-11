@@ -15,7 +15,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class BasicElectricityGeneratorScreen extends AbstractContainerScreen<BasicElectricityGeneratorMenu> {
 
     private static final ResourceLocation RESOURCE = new ResourceLocation(
-            QuantumWorld.MODID, "textures/gui/basic_electricity_generator_gui.png");
+            QuantumWorld.MODID, "textures/gui/basic_electricity_generator_gui1.png");
 
     public BasicElectricityGeneratorScreen(BasicElectricityGeneratorMenu basicElectricityGeneratorMenu, Inventory inventory, Component component) {
         super(basicElectricityGeneratorMenu, inventory, component);
