@@ -6,8 +6,8 @@ import net.minecraft.world.level.material.Material;
 public class BlockPropertiesGeneration {
 
 
-    public static final BlockBehaviour.Properties cosmicProperties = returnProperties(Material.STONE,50.0F);
-    public static final BlockBehaviour.Properties energiumProperties = returnProperties(Material.METAL, 40.0F, 1200.0F);
+    public static final BlockBehaviour.Properties cosmicProperties = returnProperties(Material.METAL,9.0F);
+    public static final BlockBehaviour.Properties energiumProperties = returnProperties(Material.STONE, 2.5F, 120.0F);
 
     private static BlockBehaviour.Properties returnProperties (Material material, Float... strengthArr) {
         Float strength;

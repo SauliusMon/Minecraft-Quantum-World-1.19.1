@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "quantum_world:energium_block",
+    "quantum_world:energium_ore",
+    "quantum_world:deepslate_energium_ore",
+
+    "quantum_world:cosmic_block",
+    "quantum_world:cosmic_ore",
+    "quantum_world:deepslate_cosmic_ore"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+      {
+        "item": "quantum_world:energium_block"
+      }
+  ],
+  "result": {
+    "item": "quantum_world:energium_ingot",
+    "count": 9
+  }
+}

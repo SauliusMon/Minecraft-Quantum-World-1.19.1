@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key":{
+    "#": {
+      "item": "quantum_world:cosmic_ingot"
+    }
+  },
+  "result": {
+    "item": "quantum_world:cosmic_block"
+  }
+}
