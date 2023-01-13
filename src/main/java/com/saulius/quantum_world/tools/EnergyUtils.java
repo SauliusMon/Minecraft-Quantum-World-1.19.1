@@ -117,6 +117,7 @@ public class EnergyUtils {
         return energyBlockEntities;
     }
 
+    @SuppressWarnings("rawtypes")
     private static final Comparator comparatorForEntitiesEnergy = (object1, object2) -> {
         AbstractModEnergyAndEntity o1 = (AbstractModEnergyAndEntity) object1;
         AbstractModEnergyAndEntity o2 = (AbstractModEnergyAndEntity) object2;
@@ -127,13 +128,7 @@ public class EnergyUtils {
         if (isReceiverEntity(o2.getEntity())) {
             return 1;
         }
-        if (o1.getEnergyStorage().getEnergyStored() == o2.getEnergyStorage().getEnergyStored()) {
-            return 0;
-        } else if (o1.getEnergyStorage().getEnergyStored() < o2.getEnergyStorage().getEnergyStored()) {
-            return -1;
-        } else {
-            return 1;
-        }
+        return Integer.compare(o1.getEnergyStorage().getEnergyStored(), o2.getEnergyStorage().getEnergyStored());
     };
 
 

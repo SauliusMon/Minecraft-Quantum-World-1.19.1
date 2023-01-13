@@ -103,7 +103,8 @@ public abstract class CableBaseEntity extends BlockEntity implements AbstractMod
                         }
                         if (EnergyUtils.isReceiverEntity(energyEntity.getEntity())) {
                             EnergyUtils.exchangeEnergy(entity, energyEntity, Math.min(entity.getEnergyStorage().getEnergyStored(), entity.getEnergyStorage().getMaxSend()));
-                            break;
+                            if (entity.getEnergyStorage().getEnergyStored() == 0)
+                                break;
                         }
                     }
                     EnergyUtils.exchangeEnergy(entity, energyEntity, powerToSend);
