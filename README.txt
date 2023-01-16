@@ -1,5 +1,3 @@
-# Quantum-World-1.19.1
-
 Newest edition of this mod can be found on newest-version branch.
 
 Hi there,
