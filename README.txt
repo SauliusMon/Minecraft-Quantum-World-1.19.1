@@ -1,8 +1,5 @@
 # Quantum-World-1.19.1
 
-# PokerGame-Task
-
-
 Newest edition of this mod can be found on newest-version branch.
 
 Hi there,
