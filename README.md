@@ -1,4 +1,4 @@
-Newest edition of this mod can be found on newest-version branch.
+## Newest edition of this mod can be found on newest-version branch.
 
 Hi there,
 
