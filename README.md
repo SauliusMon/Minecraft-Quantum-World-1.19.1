@@ -1,8 +1,8 @@
 ## Newest edition of this mod can be found on newest-version branch.
 
-### Hi there,
+## Hi there,
 
-About the mod itself:
+### About the mod itself:
    This is a tech-based mod focused on electricity and quantum physics. End-game goal would be to make a multi-block particle accelerator, which would be able to produce antimatter by smashing two particles and consuming a massive amount of energy. You would achieve that by collecting a variety of different materials required for crafting, defeating different type of mobs and bosses while traveling to different dimension(s) and building an energy system capable of providing energy to previously mentioned particle accelerator.
    
 ### Main goals:
